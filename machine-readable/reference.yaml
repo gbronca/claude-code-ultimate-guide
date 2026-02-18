@@ -3,7 +3,7 @@
 # Source: guide/ultimate-guide.md
 # Purpose: Condensed index for LLMs to quickly answer user questions about Claude Code
 
-version: "3.27.5"
+version: "3.27.6"
 updated: "2026-02-17"
 
 # ════════════════════════════════════════════════════════════════
@@ -186,7 +186,7 @@ deep_dive:
   third_party_toad: "https://github.com/batrachianai/toad"
   third_party_conductor: "https://docs.conductor.build"
   # Configuration Management & Backup (Added 2026-02-02)
-  config_management_guide: "guide/ultimate-guide.md:4085"  # Section 3.27.5
+  config_management_guide: "guide/ultimate-guide.md:4085"  # Section 3.27.6
   config_hierarchy: "guide/ultimate-guide.md:4095"  # Global → Project → Local precedence
   config_git_strategy_project: "guide/ultimate-guide.md:4110"  # What to commit in .claude/
   config_git_strategy_global: "guide/ultimate-guide.md:4133"  # Version control ~/.claude/
@@ -276,6 +276,12 @@ deep_dive:
   fast_mode_api: 10051  # API breaking changes section
   fast_mode_pricing: 1722  # Pricing table
   fast_mode_behavior: "2.5x faster, 6x price, same Opus 4.6 model"
+  # Sonnet 4.6 + 1M Context (Feb 2026) - Added 2026-02-18
+  sonnet_4_6_default: 1741  # Pricing table, Sonnet 4.6 now default
+  context_200k_vs_1m: 1751  # Decision guide: 200K vs 1M context window
+  context_200k_vs_1m_perf: "Opus 4.6: 93% @ 256K, 76% @ 1M (MRCR v2). Sonnet 4.6 scores not yet published."
+  context_200k_vs_1m_cost: "Sonnet 4.6: ~$0.23 bug fix, ~$0.75 module refactor, ~$2.25 full 1M session"
+  context_1m_beta_requirement: "API only, requires anthropic-beta header. Opus: pricing doubles >200K."
   # Debug Command (v2.1.30+) - Added 2026-02-09
   debug_command: 16280  # /debug in commands table
   debug_purpose: "Systematic troubleshooting and error investigation"
@@ -1205,7 +1211,7 @@ ecosystem:
       - "Cross-links modified → Update all 4 repos"
     history:
       - date: "2026-01-20"
-        event: "Code Landing sync v3.27.5, 66 templates, cross-links"
+        event: "Code Landing sync v3.27.6, 66 templates, cross-links"
         commit: "5b5ce62"
       - date: "2026-01-20"
         event: "Cowork Landing fix (paths, README, UI badges)"
@@ -1217,7 +1223,7 @@ ecosystem:
 onboarding_matrix_meta:
   version: "2.0.0"
   last_updated: "2026-02-05"
-  aligned_with_guide: "3.27.5"
+  aligned_with_guide: "3.27.6"
   changelog:
     - version: "2.0.0"
       date: "2026-02-05"
@@ -1245,7 +1251,7 @@ onboarding_matrix:
       core: [rules, sandbox_native_guide, commands]
       time_budget: "5 min"
       topics_max: 3
-      note: "SECURITY FIRST - sandbox before commands (v3.27.5 critical fix)"
+      note: "SECURITY FIRST - sandbox before commands (v3.27.6 critical fix)"
 
     beginner_15min:
       core: [rules, sandbox_native_guide, workflow, essential_commands]
@@ -1330,7 +1336,7 @@ onboarding_matrix:
         - default: agent_validation_checklist
       time_budget: "60 min"
       topics_max: 6
-      note: "Dual-instance pattern for quality workflows (v3.27.5)"
+      note: "Dual-instance pattern for quality workflows (v3.27.6)"
 
   learn_security:
     intermediate_30min:
@@ -1341,7 +1347,7 @@ onboarding_matrix:
         - default: permission_modes
       time_budget: "30 min"
       topics_max: 4
-      note: "NEW goal (v3.27.5) - Security-focused learning path"
+      note: "NEW goal (v3.27.6) - Security-focused learning path"
 
     power_60min:
       core: [sandbox_native_guide, mcp_secrets_management, security_hardening]
@@ -1366,7 +1372,7 @@ onboarding_matrix:
       core: [rules, sandbox_native_guide, workflow, essential_commands, context_management, plan_mode]
       time_budget: "60 min"
       topics_max: 6
-      note: "Security foundation + core workflow (v3.27.5 sandbox added)"
+      note: "Security foundation + core workflow (v3.27.6 sandbox added)"
 
     intermediate_120min:
       core: [plan_mode, agents, skills, config_hierarchy, git_mcp_guide, hooks, mcp_servers]

@@ -2,8 +2,8 @@
 # For use with /security-check and /security-audit commands
 # Manually maintained — update after new security advisories
 
-version: "2.0.0"
-updated: "2026-02-11"
+version: "2.1.0"
+updated: "2026-02-17"
 sources:
   - name: "Snyk ToxicSkills"
     url: "https://snyk.io/blog/toxicskills-malicious-ai-agent-skills-clawhub/"
@@ -47,6 +47,24 @@ sources:
   - name: "SAFE-MCP Framework"
     url: "https://www.safemcp.org"
     date: "2026-01"
+  - name: "VirusTotal - OpenClaw Malicious Skills"
+    url: "https://blog.virustotal.com/2026/02/from-automation-to-infection-how.html"
+    date: "2026-02-02"
+  - name: "arXiv - Malicious Agent Skills Empirical Study"
+    url: "https://www.arxiv.org/abs/2602.06547"
+    date: "2026-02-06"
+  - name: "SentinelOne - xcode-mcp-server CVE-2026-2178"
+    url: "https://www.sentinelone.com/vulnerability-database/cve-2026-2178/"
+    date: "2026-02-13"
+  - name: "Immersive Labs - CVE-2026-23744 MCPJam RCE"
+    url: "https://community.immersivelabs.com/blog/the-human-connection-blog/new-cti-lab-cve-2026-23744-mcpjam-rce-offensive/3882"
+    date: "2026-01-21"
+  - name: "Aikido - Hallucinated npx Commands in Skills"
+    url: "https://www.aikido.dev/blog/agent-skills-spreading-hallucinated-npx-commands"
+    date: "2026-01-21"
+  - name: "OWASP Top 10 for Agentic AI Security Risks 2026"
+    url: "https://www.startupdefense.io/blog/owasp-top-10-agentic-ai-security-risks-2026"
+    date: "2026-02-16"
 
 # ═══════════════════════════════════════════════════════════════
 # MALICIOUS AUTHORS (confirmed by security researchers)
@@ -69,6 +87,11 @@ malicious_authors:
     source: "Snyk ToxicSkills"
     risk: "critical"
     notes: "Mixed prompt-injection + exfil; GitHub repo aztr0nutzs/NET_NiNjA.v1.2 hosts additional weaponized skills"
+  # VirusTotal confirmed — single publisher, 314+ skills, 100% malicious
+  - name: "hightower6eu"
+    source: "VirusTotal OpenClaw Analysis"
+    risk: "critical"
+    notes: "Single malicious publisher responsible for 314+ OpenClaw skills; all confirmed malicious by VirusTotal scan; malware disguised as productivity/utility tools"
 
 # ═══════════════════════════════════════════════════════════════
 # MALICIOUS SKILLS (confirmed by researchers)
@@ -670,6 +693,34 @@ cve_database:
     fixed_in: "0.1.28"
     mitigation: "Update to >= 0.1.28"
 
+  # --- MCPJam Inspector ---
+  - id: "CVE-2026-23744"
+    component: "MCPJam Inspector"
+    severity: "critical"
+    description: "RCE via crafted HTTP request that triggers automatic MCP server installation; allows remote attacker to execute arbitrary code on developer machine"
+    source: "Immersive Labs / CVE-2026-23744"
+    fixed_in: "1.4.3"
+    mitigation: "Update MCPJam Inspector to >= 1.4.3; restrict to localhost; do not expose MCPJam to untrusted networks"
+    notes: "Affects local-first MCP dev platform; versions <= 1.4.2 vulnerable"
+
+  # --- xcode-mcp-server ---
+  - id: "CVE-2026-2178"
+    component: "xcode-mcp-server (r-huijts)"
+    severity: "high"
+    description: "Command injection in registerXcodeTools function via unsanitized args argument passed to exec(); allows RCE or data exfiltration"
+    source: "SentinelOne"
+    fixed_in: "after commit f3419f00117aa9949e326f78cc940166c88f18cb"
+    mitigation: "Update to latest commit post-f3419f00; avoid passing user-controlled input to exec(); switch to execFile() with argument arrays"
+
+  # --- MCP Salesforce Connector ---
+  - id: "CVE-2026-25650"
+    component: "MCP Salesforce Connector"
+    severity: "medium"
+    description: "Arbitrary attribute access — prior to 0.1.10, attacker can access arbitrary object attributes via crafted MCP requests, potentially exposing sensitive Salesforce data"
+    source: "NVD"
+    fixed_in: "0.1.10"
+    mitigation: "Update MCP Salesforce Connector to >= 0.1.10; enforce attribute allowlists"
+
 # ═══════════════════════════════════════════════════════════════
 # MINIMUM SAFE VERSIONS (quick reference for scanning)
 # ═══════════════════════════════════════════════════════════════
@@ -684,6 +735,8 @@ minimum_safe_versions:
   "mcp-package-docs": "0.1.28"
   "cursor": "1.3.9"
   "claude-code": "2.1.34"
+  "mcpjam-inspector": "1.4.3"
+  "mcp-salesforce-connector": "0.1.10"
 
 # ═══════════════════════════════════════════════════════════════
 # IOCs (Indicators of Compromise)
@@ -1055,6 +1108,15 @@ attack_techniques:
     campaigns: ["ClawHavoc", "ToxicSkills"]
     mitigation: "Block agent access to .env, .aws, .ssh directories; use pre-execution hooks"
 
+  - id: "T009"
+    name: "Slopsquatting / Hallucinated Package Injection"
+    description: "Malicious skills spread hallucinated or fabricated package names (e.g. via npx commands) that resolve to attacker-controlled packages on npm/PyPI when executed"
+    examples:
+      - "Skills with setup instructions referencing nonexistent npm packages that typosquat legitimate tools"
+      - "AI-generated skill content propagating hallucinated npx commands that install malicious packages"
+    source: "Aikido Security (2026-01-21)"
+    mitigation: "Verify every package reference in SKILL.md before executing setup instructions; use package lockfiles; pin all dependencies to known-good checksums"
+
 # ═══════════════════════════════════════════════════════════════
 # SCANNING TOOLS
 # ═══════════════════════════════════════════════════════════════
@@ -1138,6 +1200,36 @@ scanning_tools:
     limitations:
       - "ClawHub/OpenClaw specific"
 
+  - name: "Mcpwn"
+    vendor: "community"
+    type: "cli"
+    url: "https://hackers-arise.com/artificial-intelligence-in-cybersecurity-part-9-how-to-test-mcp-servers-for-security-vulnerabilities/"
+    capabilities:
+      - "Dedicated MCP vulnerability scanner"
+      - "Detects RCE via command injection in MCP servers"
+      - "Path traversal weakness detection"
+      - "Prompt injection risk identification"
+      - "Quick scan mode focused on RCE surface"
+      - "Supports custom Python and Node.js MCP servers"
+    limitations:
+      - "Newer/community tool — smaller detection database than mcp-scan"
+      - "Less coverage of skills.sh / ClawHub skill scanning"
+
+  - name: "Mend SAST MCP"
+    vendor: "Mend.io"
+    type: "mcp-server"
+    url: "https://appsecsanta.com/mend-sast"
+    capabilities:
+      - "Commercial SAST with MCP server integration"
+      - "Real-time static analysis on AI-generated code via IDE"
+      - "Software composition analysis (SCA) for dependencies"
+      - "Integrates with Cursor, VS Code, Claude Code, Windsurf"
+      - "mend-code-security-assistant tool: SAST scans"
+      - "mend-dependencies-assistant tool: SCA checks"
+    limitations:
+      - "Commercial product — requires Mend.io subscription"
+      - "Code scanning focus — does not scan SKILL.md or MCP configs directly"
+
 # ═══════════════════════════════════════════════════════════════
 # DEFENSIVE FRAMEWORKS & BLOCKLISTS
 # ═══════════════════════════════════════════════════════════════
@@ -1170,3 +1262,8 @@ defensive_resources:
       exposed_servers: 1000
       no_auth: true
       risk_examples: ["Kubernetes clusters", "CRM access", "WhatsApp messaging", "arbitrary shell"]
+
+  - name: "OWASP Top 10 for Agentic AI Security Risks 2026"
+    url: "https://www.startupdefense.io/blog/owasp-top-10-agentic-ai-security-risks-2026"
+    type: "framework"
+    description: "Community-maintained OWASP-style Top 10 listing for agentic AI systems; covers Agent Goal Hijacking (#1), Supply Chain compromise, Tool Poisoning, Prompt Injection, Memory Poisoning, and more. Updated 2026-02-16."

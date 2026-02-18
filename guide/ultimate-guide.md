@@ -16,7 +16,7 @@ tags: [guide, reference, workflows, agents, hooks, mcp, security]
 
 **Last updated**: January 2026
 
-**Version**: 3.27.5
+**Version**: 3.27.6
 
 ---
 
@@ -1738,17 +1738,54 @@ Claude Code isn't free - you're using API credits. Understanding costs helps opt
 
 #### Pricing Model (as of February 2026)
 
-Claude Code uses **Claude Sonnet 4.5** by default:
+Claude Code uses **Claude Sonnet 4.6** by default (as of Feb 2026):
 
 | Model | Input (per 1M tokens) | Output (per 1M tokens) | Context Window | Notes |
 |-------|----------------------|------------------------|----------------|-------|
-| **Sonnet 4.5** | $3.00 | $15.00 | 200K tokens | Default model |
+| **Sonnet 4.6** | $3.00 | $15.00 | 200K tokens | Default model (Feb 2026) |
+| Sonnet 4.5 | $3.00 | $15.00 | 200K tokens | Legacy (same price) |
 | Opus 4.6 (standard) | $5.00 | $25.00 | 200K tokens | Released Feb 2026 |
 | Opus 4.6 (1M context beta) | $10.00 | $37.50 | 1M tokens | Requests >200K context |
 | Opus 4.6 (fast mode) | $30.00 | $150.00 | 200K tokens | 2.5x faster, 6x price |
 | Haiku 4.5 | $0.80 | $4.00 | 200K tokens | Budget option |
 
 **Reality check**: A typical 1-hour session costs **$0.10 - $0.50** depending on usage patterns.
+
+#### 200K vs 1M Context: Performance, Cost & Use Cases
+
+The 1M context window (beta, API only) is a significant capability jump — but it's not always the right choice.
+
+**Retrieval accuracy at scale (MRCR v2 8-needle benchmark)**
+
+| Model | 256K accuracy | 1M accuracy | Source |
+|-------|--------------|-------------|--------|
+| Opus 4.6 | 93% | 76% | Anthropic blog (Feb 2026) |
+| Sonnet 4.5 | — | 18.5% | Anthropic blog |
+| Sonnet 4.6 | Not yet published | Not yet published | — |
+
+Note: Opus 4.6 retains strong accuracy at 1M (76%), while Sonnet 4.5 degrades sharply. Sonnet 4.6 MRCR scores have not yet been published by Anthropic.
+
+**Cost per session (approximate)**
+
+| Session type | ~Tokens in | ~Tokens out | Sonnet 4.6 | Opus 4.6 |
+|---|---|---|---|---|
+| Bug fix / PR review | 50K | 5K | ~$0.23 | ~$0.38 |
+| Module refactoring | 150K | 20K | ~$0.75 | ~$1.25 |
+| Full service analysis (1M beta) | 500K | 50K | ~$2.25 | ~$8.75 |
+
+**When to use which**
+
+| Scenario | Recommendation |
+|----------|---------------|
+| Bug fix, PR review, daily coding | Sonnet 4.6 @ 200K — fast and cheap |
+| Cross-module refactoring, large codebase | Sonnet 4.6 @ 1M beta — volume without premium |
+| Architecture analysis, Agent Teams, complex reasoning | Opus 4.6 @ 1M beta — accuracy matters |
+
+**Key facts**
+- Opus 4.6 max output: **128K tokens**; Sonnet 4.6 max output: **64K tokens**
+- 1M context ≈ 30,000 lines of code / 750,000 words
+- 1M context is **beta** (API only, requires `anthropic-beta: interleaved-thinking-2025-05-14` header)
+- Opus 4.6 pricing doubles above 200K; no premium tier announced yet for Sonnet 4.6
 
 #### What Costs the Most?
 
@@ -3632,7 +3669,7 @@ User: "Actually, here's what I need: [refined instruction with specifics]"
 
 ### Context Management
 
-Claude Code operates within a ~200K token context window:
+Claude Code operates within a **200K token context window** (1M beta available via API — see [200K vs 1M comparison](line 1751)):
 
 | Component | Approximate Size |
 |-----------|------------------|
@@ -4292,7 +4329,7 @@ The `.claude/` folder is your project's Claude Code directory for memory, settin
 | Personal preferences | `CLAUDE.md` | ❌ Gitignore |
 | Personal permissions | `settings.local.json` | ❌ Gitignore |
 
-### 3.27.5 Version Control & Backup
+### 3.27.6 Version Control & Backup
 
 **Problem**: Without version control, losing your Claude Code configuration means hours of manual reconfiguration across agents, skills, hooks, and MCP servers.
 
@@ -19597,4 +19634,4 @@ We'll evaluate and add it to this section if it meets quality criteria.
 
 **Contributions**: Issues and PRs welcome.
 
-**Last updated**: January 2026 | **Version**: 3.27.5
+**Last updated**: January 2026 | **Version**: 3.27.6

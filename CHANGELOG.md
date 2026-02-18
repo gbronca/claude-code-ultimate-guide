@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [3.27.6] - 2026-02-18
+
+### Added
+- New subsection "200K vs 1M Context: Performance, Cost & Use Cases" in pricing section (MRCR benchmark table, cost-per-session table, decision guide, key facts)
+- `machine-readable/reference.yaml`: 5 new entries for Sonnet 4.6 + context window comparison
+
+### Changed
+- Pricing table: Sonnet 4.6 now listed as default model (replaced Sonnet 4.5)
+- Context Management section: updated to mention 1M beta with link to comparison subsection
+- `threat-db.yaml` v2.1.0: added CVE-2026-23744 (MCPJam RCE), hightower6eu publisher (314+ malicious skills), Slopsquatting technique T009, Mcpwn scanner, OWASP Agentic AI Top 10 2026, new sources (VirusTotal, SentinelOne, Immersive Labs, arXiv)
+- `cheatsheet.pdf`: updated binary
+
 ## [3.27.5] - 2026-02-17
 
 ### Documentation

@@ -7,7 +7,7 @@
 <p align="center">
   <a href="https://github.com/FlorianBruniaux/claude-code-ultimate-guide/stargazers"><img src="https://img.shields.io/github/stars/FlorianBruniaux/claude-code-ultimate-guide?style=for-the-badge" alt="Stars"/></a>
   <a href="./CHANGELOG.md"><img src="https://img.shields.io/badge/Updated-Feb_22,_2026_·_v3.28.1-brightgreen?style=for-the-badge" alt="Last Update"/></a>
-  <a href="./quiz/"><img src="https://img.shields.io/badge/Quiz-271_questions-orange?style=for-the-badge" alt="Quiz"/></a>
+  <a href="./quiz/"><img src="https://img.shields.io/badge/Quiz-274_questions-orange?style=for-the-badge" alt="Quiz"/></a>
   <a href="./examples/"><img src="https://img.shields.io/badge/Templates-175-green?style=for-the-badge" alt="Templates"/></a>
   <a href="./guide/security-hardening.md"><img src="https://img.shields.io/badge/🛡️_Threat_DB-24_CVEs_·_655_malicious_skills-red?style=for-the-badge" alt="Threat Database"/></a>
 </p>
@@ -33,7 +33,7 @@
 - ✅ **Visualize concepts** — 40 Mermaid diagrams covering model selection, master loop, memory hierarchy, multi-agent patterns, security threats
 - ✅ **Master methodologies** — TDD, SDD, BDD with AI collaboration (not just templates)
 - ✅ **Security mindset** — Threat modeling for AI systems (only guide with 24 CVEs + 655 malicious skills database)
-- ✅ **Test your knowledge** — 271-question quiz to validate understanding (no other resource offers this)
+- ✅ **Test your knowledge** — 274-question quiz to validate understanding (no other resource offers this)
 
 **Outcome**: Go from copy-pasting configs to designing your own agentic workflows with confidence.
 
@@ -49,7 +49,7 @@ Both guides serve different needs. Choose based on your priority.
 | **Quick setup** for projects | Available but not the priority | Battle-tested production configs |
 | **Learn trade-offs** (agents vs skills) | Decision frameworks + comparisons | Lists patterns, no trade-off analysis |
 | **Security hardening** | Only threat database (24 CVEs) | Basic patterns only |
-| **Test understanding** | 271-question quiz | Not available |
+| **Test understanding** | 274-question quiz | Not available |
 | **Methodologies** (TDD/SDD/BDD) | Full workflow guides | Not covered |
 | **Copy-paste ready** templates | 175 templates | 200+ templates |
 
@@ -60,7 +60,7 @@ Both guides serve different needs. Choose based on your priority.
                            ▲
                            │
                            │  ★ This Guide
-                           │  Security + Methodologies + 19K lines
+                           │  Security + Methodologies + 20K lines
                            │
                            │  [Everything-You-Need-to-Know]
                            │  SDLC/BMAD beginner
@@ -77,8 +77,8 @@ Both guides serve different needs. Choose based on your priority.
 **4 unique gaps no competitor covers:**
 1. **Security-First** — 24 CVEs + 655 malicious skills tracked (no competitor has this depth)
 2. **Methodology Workflows** — TDD/SDD/BDD comparison + step-by-step guides
-3. **Comprehensive Reference** — 19K lines across 16 specialized guides (24× more reference material than everything-cc)
-4. **Educational Progression** — 271-question quiz, beginner → expert path
+3. **Comprehensive Reference** — 20K lines across 16 specialized guides (24× more reference material than everything-cc)
+4. **Educational Progression** — 274-question quiz, beginner → expert path
 
 **Recommended workflow:**
 1. Learn concepts here (mental models, trade-offs, security)
@@ -136,9 +136,9 @@ Save as `CLAUDE.md` in your project root. Claude reads it automatically.
 graph LR
     root[📦 Repository<br/>Root]
 
-    root --> guide[📖 guide/<br/>19K lines]
+    root --> guide[📖 guide/<br/>20K lines]
     root --> examples[📋 examples/<br/>175 templates]
-    root --> quiz[🧠 quiz/<br/>271 questions]
+    root --> quiz[🧠 quiz/<br/>274 questions]
     root --> tools[🔧 tools/<br/>utils]
     root --> machine[🤖 machine-readable/<br/>AI index]
     root --> docs[📚 docs/<br/>83 evaluations]
@@ -158,7 +158,7 @@ graph LR
 ```
 📦 claude-code-ultimate-guide/
 │
-├─ 📖 guide/              Core Documentation (~20K lines)
+├─ 📖 guide/              Core Documentation (20K+ lines)
 │  ├─ ultimate-guide.md   Complete reference, 10 sections
 │  ├─ cheatsheet.md       1-page printable
 │  ├─ architecture.md     How Claude Code works internally
@@ -175,7 +175,7 @@ graph LR
 │  ├─ skills/             14 skills (9 on SkillHub)
 │  └─ scripts/            Utility scripts (audit, search)
 │
-├─ 🧠 quiz/               271 Questions
+├─ 🧠 quiz/               274 Questions
 │  ├─ 9 categories        Setup, Agents, MCP, Trust, Advanced...
 │  ├─ 4 profiles          Junior, Senior, Power User, PM
 │  └─ Instant feedback    Doc links + score tracking
@@ -226,7 +226,7 @@ graph LR
 
 [Browse all 40 diagrams →](./guide/diagrams/)
 
-**What this means for you**: Understand the master loop before reading 19K lines, see multi-agent topologies at a glance, share visual security threat models with your team.
+**What this means for you**: Understand the master loop before reading 20K lines, see multi-agent topologies at a glance, share visual security threat models with your team.
 
 ---
 
@@ -245,7 +245,7 @@ graph LR
 
 ---
 
-### 📝 271-Question Knowledge Validation (Unique in Ecosystem)
+### 📝 274-Question Knowledge Validation (Unique in Ecosystem)
 
 **Outcome**: Verify your understanding + identify knowledge gaps.
 
@@ -289,7 +289,7 @@ Complete guides with rationale and examples:
 
 ---
 
-### 📚 164 Annotated Templates
+### 📚 175 Annotated Templates
 
 **Outcome**: Learn patterns, not just configs.
 
@@ -703,7 +703,7 @@ Use this guide critically. Experiment. Share what works for you.
 
 | File | Purpose | Time |
 |------|---------|------|
-| **[Ultimate Guide](./guide/ultimate-guide.md)** | Complete reference (~19K lines), 10 sections | 30-40h (full) • Most consult sections |
+| **[Ultimate Guide](./guide/ultimate-guide.md)** | Complete reference (20K+ lines), 10 sections | 30-40h (full) • Most consult sections |
 | **[Cheat Sheet](./guide/cheatsheet.md)** | 1-page printable reference | 5 min |
 | **[Visual Reference](./guide/visual-reference.md)** | 20 ASCII diagrams for key concepts | 5 min |
 | **[Architecture](./guide/architecture.md)** | How Claude Code works internally | 25 min |
@@ -721,7 +721,7 @@ Use this guide critically. Experiment. Share what works for you.
 | **[Claude Code Releases](./guide/claude-code-releases.md)** | Official release history | 10 min |
 
 <details>
-<summary><strong>Examples Library</strong> (164 templates)</summary>
+<summary><strong>Examples Library</strong> (175 templates)</summary>
 
 **Agents** (6): [code-reviewer](./examples/agents/code-reviewer.md), [test-writer](./examples/agents/test-writer.md), [security-auditor](./examples/agents/security-auditor.md), [refactoring-specialist](./examples/agents/refactoring-specialist.md), [output-evaluator](./examples/agents/output-evaluator.md), [devops-sre](./examples/agents/devops-sre.md) ⭐
 
@@ -744,7 +744,7 @@ Use this guide critically. Experiment. Share what works for you.
 </details>
 
 <details>
-<summary><strong>Knowledge Quiz</strong> (271 questions)</summary>
+<summary><strong>Knowledge Quiz</strong> (274 questions)</summary>
 
 Test your Claude Code knowledge with an interactive CLI quiz covering all guide sections.
 
@@ -834,7 +834,7 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
 
 ### Tools
 - [Ask Zread](https://zread.ai/FlorianBruniaux/claude-code-ultimate-guide) — Ask questions about this guide
-- [Interactive Quiz](./quiz/) — 271 questions
+- [Interactive Quiz](./quiz/) — 274 questions
 - [Landing Site](https://florianbruniaux.github.io/claude-code-ultimate-guide-landing/) — Visual navigation
 
 ---

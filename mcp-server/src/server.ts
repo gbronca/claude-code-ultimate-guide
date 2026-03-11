@@ -10,6 +10,7 @@ import { registerReleases } from './tools/releases.js';
 import { registerCompareVersions } from './tools/compare-versions.js';
 import { registerGetThreat, registerListThreats } from './tools/threats.js';
 import { registerSearchExamples } from './tools/search-examples.js';
+import { registerOfficialDocs } from './tools/official-docs.js';
 import { registerResources } from './resources/index.js';
 import { registerPrompts } from './prompts/index.js';
 import { loadReference, loadReleases, isDevMode } from './lib/content.js';
@@ -45,6 +46,7 @@ export function createServer(): McpServer {
   registerGetThreat(server);
   registerListThreats(server);
   registerSearchExamples(server);
+  registerOfficialDocs(server);
 
   // Register resources
   registerResources(server);

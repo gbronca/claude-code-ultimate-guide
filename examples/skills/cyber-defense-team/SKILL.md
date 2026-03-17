@@ -1,6 +1,6 @@
 ---
 name: cyber-defense-team
-description: Orchestrate a 4-agent cyber defense pipeline to analyze log files for threats. Spawns log-ingestor → anomaly-detector → risk-classifier → threat-reporter as parallel-then-sequential agents. Produces a Markdown incident report.
+description: "Orchestrate a 4-agent cyber defense pipeline to analyze log files for threats. Use when investigating security logs, detecting anomalies in access patterns, classifying breach severity, or generating incident reports from nginx/auth/syslog files."
 version: 1.0.0
 usage: /cyber-defense-team [log-file-path]
 args:
@@ -38,39 +38,30 @@ Check that the log file exists (or that log content was provided inline). If the
 
 ### Step 2 — Spawn Log Ingestor
 
-Use the Agent tool to spawn the `log-ingestor` agent:
-
 ```
-Task: Parse the log file at [log_path] and write structured events to cyber-defense-events.json.
-Log path: [log_path]
+Agent(tool="Task", prompt="Parse the log file at [log_path] and write structured events to cyber-defense-events.json.", agent="log-ingestor", model="haiku")
 ```
 
 Wait for completion. Confirm `cyber-defense-events.json` was created.
 
 ### Step 3 — Spawn Anomaly Detector
 
-Use the Agent tool to spawn the `anomaly-detector` agent:
-
 ```
-Task: Read cyber-defense-events.json and detect anomalies. Write results to cyber-defense-anomalies.json.
+Agent(tool="Task", prompt="Read cyber-defense-events.json and detect anomalies. Write results to cyber-defense-anomalies.json.", agent="anomaly-detector", model="sonnet")
 ```
 
 Wait for completion. If `anomalies_found: 0`, skip to Step 5 (reporter still runs).
 
 ### Step 4 — Spawn Risk Classifier
 
-Use the Agent tool to spawn the `risk-classifier` agent:
-
 ```
-Task: Read cyber-defense-anomalies.json and classify overall risk. Write result to cyber-defense-risk.json.
+Agent(tool="Task", prompt="Read cyber-defense-anomalies.json and classify overall risk. Write result to cyber-defense-risk.json.", agent="risk-classifier", model="sonnet")
 ```
 
 ### Step 5 — Spawn Threat Reporter
 
-Use the Agent tool to spawn the `threat-reporter` agent:
-
 ```
-Task: Read cyber-defense-events.json, cyber-defense-anomalies.json, and cyber-defense-risk.json. Generate a complete incident report and save it to cyber-defense-report.md.
+Agent(tool="Task", prompt="Read all 3 JSON files (events, anomalies, risk). Generate a complete incident report and save to cyber-defense-report.md.", agent="threat-reporter", model="sonnet")
 ```
 
 ### Step 6 — Summarize for User

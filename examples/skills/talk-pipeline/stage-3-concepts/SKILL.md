@@ -1,10 +1,8 @@
 ---
 name: talk-stage3-concepts
-description: Stage 3 — Build a numbered, scored concept catalogue. Every concept gets HIGH / MEDIUM / LOW talk-potential rating.
+description: "Builds a numbered, categorized concept catalogue from the talk summary and timeline, scoring each concept HIGH / MEDIUM / LOW for talk potential with optional repo enrichment. Use when you need a structured inventory of concepts before choosing a talk angle, or when assessing which ideas have the strongest presentation potential."
 tags: [talk, pipeline, presentation, stage-3]
-allowed-tools:
-  - Write
-  - Read
+allowed-tools: "Write, Read"
 ---
 
 # Talk Stage 3: Concepts

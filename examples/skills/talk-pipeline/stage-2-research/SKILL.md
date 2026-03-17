@@ -1,11 +1,8 @@
 ---
 name: talk-stage2-research
-description: Stage 2 (REX mode only) — Git archaeology, changelog analysis, verified factual timeline. Skip automatically in Concept mode.
+description: "Performs git archaeology, changelog analysis, and builds a verified factual timeline by cross-referencing git history with source material. REX mode only — skipped automatically in Concept mode. Use when building a REX talk and you need verified commit metrics, release timelines, and contributor data from a git repository."
 tags: [talk, pipeline, presentation, stage-2, git]
-allowed-tools:
-  - Write
-  - Read
-  - Bash
+allowed-tools: "Write, Read, Bash"
 ---
 
 # Talk Stage 2: Research (REX mode only)

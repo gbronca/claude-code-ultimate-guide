@@ -1,6 +1,6 @@
 ---
 name: guide-recap
-description: Transform CHANGELOG entries into social content (LinkedIn, Twitter/X, Newsletter, Slack) in FR + EN. Use after releases or weekly to generate ready-to-post content from guide updates.
+description: "Transform CHANGELOG entries into social content (LinkedIn, Twitter/X, Newsletter, Slack) in FR + EN. Use after releases or weekly to generate release notes, announcements, social media posts, or recap summaries from guide updates."
 argument-hint: "<latest|vX.Y.Z|week [YYYY-MM-DD]> [--interactive] [--format=linkedin|twitter|newsletter|slack] [--lang=fr|en] [--save]"
 tags: [changelog, social-media, content, linkedin, twitter]
 ---

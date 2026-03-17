@@ -1,10 +1,8 @@
 ---
 name: talk-stage6-revision
-description: Stage 6 — Revision sheets for during and after the talk. Master concept table, Q&A cheat-sheet, glossary, external resources.
+description: "Produces revision sheets with quick navigation by act, a master concept-to-URL table, Q&A cheat-sheet with 6-10 anticipated questions, glossary, and external resources list. Use when preparing for a talk with Q&A, creating shareable reference material for attendees, or building a safety-net glossary for live delivery."
 tags: [talk, pipeline, presentation, stage-6]
-allowed-tools:
-  - Write
-  - Read
+allowed-tools: "Write, Read"
 ---
 
 # Talk Stage 6: Revision

@@ -1,6 +1,6 @@
 ---
 name: release-notes-generator
-description: Generate release notes in 3 formats (CHANGELOG.md, PR body, Slack announcement) from git commits. Automatically categorizes changes and converts technical language to user-friendly messaging. Use when preparing a production release.
+description: "Generate release notes in 3 formats (CHANGELOG.md, PR body, Slack announcement) from git commits. Automatically categorizes changes and converts technical language to user-friendly messaging. Use for releases, changelogs, version notes, what's new summaries, or ship announcements."
 tags: [release-notes, changelog, slack, git, automation]
 ---
 
@@ -8,25 +8,14 @@ tags: [release-notes, changelog, slack, git, automation]
 
 Generate comprehensive release notes in 3 formats from git commits.
 
-## When to Use This Skill
+## Workflow
 
-- Preparing a production release (develop -> main)
-- Creating release PR with proper documentation
-- Generating Slack announcement for stakeholders
-- Updating CHANGELOG.md with new version
-- Analyzing commits since last release
-
-## What This Skill Does
-
-1. **Analyzes Git History**: Scans commits since last release tag or specified version
-2. **Fetches PR Details**: Gets PR titles, descriptions, and labels via `gh api`
-3. **Categorizes Changes**: Groups into features, bug fixes, improvements, security, breaking changes
-4. **Generates 3 Outputs**:
-   - **CHANGELOG.md section** (technical, complete)
-   - **PR Release body** (semi-technical, checklist)
-   - **Slack message** (product-focused, user-friendly)
-5. **Transforms Language**: Converts technical jargon to accessible messaging
-6. **Migration Alert**: Displays prominent warning if database migrations are required
+1. **Analyze git history** since last release tag or specified version
+2. **Fetch PR details** (titles, descriptions, labels) via `gh api`
+3. **Categorize changes** into features, bug fixes, improvements, security, breaking changes
+4. **Generate 3 outputs**: CHANGELOG.md section (technical), PR release body (semi-technical), Slack message (user-friendly)
+5. **Transform language** from technical jargon to accessible messaging
+6. **Alert on migrations** if database migrations are detected
 
 ## How to Use
 

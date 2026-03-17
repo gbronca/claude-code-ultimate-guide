@@ -1,23 +1,21 @@
 ---
 name: skill-creator
-description: Create new Claude Code skills with proper structure, YAML frontmatter, and bundled resources. Generates skill templates following best practices for modular, self-contained capability packages.
+description: "Scaffold a new Claude Code skill with SKILL.md, frontmatter, and bundled resources. Use when creating a custom skill, standardizing skill structure across a team, or packaging a skill for distribution."
 tags: [meta, skill, generator, claude-code]
 ---
 
 # Skill Creator
 
-This skill helps you create new Claude Code skills with proper structure and best practices.
+Generate new Claude Code skills with correct directory structure, YAML frontmatter, and optional bundled resources.
 
-## When to Use This Skill
+## When to Use
 
-- Creating a new custom skill for your project
-- Standardizing skill structure across your team
+- Creating a new custom skill for a project
+- Standardizing skill structure across a team
 - Generating skill templates with scripts, references, and assets
 - Packaging skills for distribution
 
-## Skill Structure
-
-A Claude skill consists of:
+## Skill Directory Structure
 
 ```
 skill-name/
@@ -27,99 +25,71 @@ skill-name/
 └── assets/           # Optional: Templates, images, boilerplate (not loaded into context)
 ```
 
-## SKILL.md Format
+## Workflow
 
-Every skill requires a `SKILL.md` file with:
-
-```markdown
----
-name: skill-name
-description: One-line description of what the skill does and when to use it.
----
-
-# Skill Name
-
-Brief introduction explaining the skill's purpose.
-
-## When to Use This Skill
-
-- Trigger condition 1
-- Trigger condition 2
-- Trigger condition 3
-
-## What This Skill Does
-
-1. **Step 1**: Description
-2. **Step 2**: Description
-3. **Step 3**: Description
-
-## How to Use
-
-### Basic Usage
-[Examples of how to invoke the skill]
-
-### With Options
-[Advanced usage patterns]
-
-## Example
-
-**User**: "Example prompt"
-
-**Output**:
-[Example output]
-
-## Tips
-
-- Best practice 1
-- Best practice 2
-
-## Related Use Cases
-
-- Related task 1
-- Related task 2
-```
-
-## How to Use
-
-### Create a New Skill
+### 1. Create the Skill
 
 ```
 Create a new skill called "my-skill-name" in ~/.claude/skills/
 ```
 
-### Create with Specific Purpose
+Or with a specific purpose:
 
 ```
 Create a skill for generating release notes from git commits,
 with templates for CHANGELOG.md and Slack announcements
 ```
 
-### Initialize Skill Structure
-
-Run the initialization script:
+Or via the initialization script:
 
 ```bash
 python3 ~/.claude/skills/skill-creator/scripts/init_skill.py <skill-name> --path <output-directory>
 ```
 
-### Package Skill for Distribution
+### 2. Generated SKILL.md Template
+
+The created SKILL.md follows this structure:
+
+```markdown
+---
+name: skill-name
+description: "What the skill does. Use when [trigger conditions]."
+---
+
+# Skill Name
+
+## When to Use
+- Trigger condition 1
+- Trigger condition 2
+
+## What This Skill Does
+1. **Step 1**: Description
+2. **Step 2**: Description
+
+## How to Use
+[Usage examples]
+
+## Example
+**User**: "Example prompt"
+**Output**: [Example output]
+```
+
+### 3. Validate the Skill
+
+After creation, verify:
+
+1. **Frontmatter**: `name` is kebab-case, 1-64 chars; `description` is a quoted string with "Use when" clause
+2. **Content**: Has "When to Use" section with trigger conditions and at least one usage example
+3. **Structure**: SKILL.md is under 5000 words; references and assets are in correct subdirectories
+4. **Test**: Invoke the skill with a real use case and confirm expected output
+
+### 4. Package for Distribution (Optional)
 
 ```bash
 python3 ~/.claude/skills/skill-creator/scripts/package_skill.py <path/to/skill-folder> [output-directory]
 ```
 
-## Design Principles
-
-### Progressive Disclosure
-
-Context loads hierarchically to optimize token usage:
-1. **Metadata** (~100 words): Always present via skill description
-2. **SKILL.md** (<5k words): Loaded when skill is triggered
-3. **Bundled resources**: Loaded as needed during execution
-
-### Organizational Patterns
-
-Choose the pattern that fits your skill:
+## Organizational Patterns
 
 | Pattern | Best For | Structure |
 |---------|----------|-----------|
@@ -128,59 +98,22 @@ Choose the pattern that fits your skill:
 | **Reference/Guidelines** | Standards, specs | Rules and examples |
 | **Capabilities-Based** | Interrelated features | Feature descriptions |
 
-### Naming Conventions
-
-- Use `kebab-case` for skill names: `release-notes-generator`
-- Use descriptive names that indicate purpose
-- Keep names concise but meaningful
-
-## Bundled Resources
-
-### scripts/
-
-Executable code for deterministic, repeatable tasks:
-- `init_skill.py` - Initialize new skill structure
-- `package_skill.py` - Package skill for distribution
-
-### references/
-
-Documentation loaded contextually:
-- API documentation
-- Style guides
-- Domain knowledge
-
-### assets/
-
-Templates and resources (not auto-loaded):
-- Output templates
-- Boilerplate code
-- Images and fonts
-
 ## Example: Creating a Release Notes Skill
 
-**User**: "Create a skill for generating release notes with 3 output formats: CHANGELOG.md, PR body, and Slack message"
+**User**: "Create a skill for generating release notes with 3 output formats"
 
 **Steps**:
-1. Initialize structure: `init_skill.py release-notes-generator --path ~/.claude/skills/`
-2. Add templates to `assets/`:
-   - `changelog-template.md`
-   - `pr-release-template.md`
-   - `slack-template.md`
-3. Add transformation rules to `references/`:
-   - `tech-to-product-mappings.md`
+1. Initialize: `init_skill.py release-notes-generator --path ~/.claude/skills/`
+2. Add templates to `assets/`: `changelog-template.md`, `pr-release-template.md`, `slack-template.md`
+3. Add rules to `references/`: `tech-to-product-mappings.md`
 4. Complete `SKILL.md` with usage instructions
-5. Package: `package_skill.py ~/.claude/skills/release-notes-generator`
+5. Validate: check frontmatter, test with a real commit range
+6. Package: `package_skill.py ~/.claude/skills/release-notes-generator`
 
 ## Tips
 
 - Keep SKILL.md under 5000 words for efficient context usage
-- Use references/ for domain knowledge that doesn't change often
-- Put templates in assets/ so they're not auto-loaded
-- Test your skill with real use cases before packaging
-- Include concrete examples in your SKILL.md
-
-## Related Use Cases
-
-- Creating project-specific automation skills
-- Building team-shared development workflows
-- Packaging reusable Claude capabilities
+- Use `references/` for domain knowledge that doesn't change often
+- Put templates in `assets/` so they're not auto-loaded into context
+- Always include a "Use when" clause in the description frontmatter
+- Test with real use cases before packaging

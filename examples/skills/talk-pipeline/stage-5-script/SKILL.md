@@ -1,10 +1,8 @@
 ---
 name: talk-stage5-script
-description: Stage 5 — 5-act pitch with speaker notes, slide spec, and Kimi prompt for AI slide generation. Requires validated angle + title from Stage 4.
+description: "Produces a complete 5-act pitch with speaker notes, a slide-by-slide specification, and a ready-to-paste Kimi prompt for AI slide generation. Requires validated angle and title from Stage 4. Use when you have a confirmed talk angle and need the full script, slide spec, and AI-generated presentation prompt."
 tags: [talk, pipeline, presentation, stage-5, kimi]
-allowed-tools:
-  - Write
-  - Read
+allowed-tools: "Write, Read"
 ---
 
 # Talk Stage 5: Script

@@ -1,6 +1,6 @@
 ---
 name: voice-refine
-description: Transform verbose voice input into optimized Claude prompts
+description: "Transform verbose voice input into structured, token-efficient Claude prompts. Use when cleaning up voice memos, dictation output, or speech-to-text transcriptions that contain filler words, repetitions, and unstructured thoughts."
 allowed-tools: Read
 context: inherit
 agent: specialist
@@ -85,39 +85,11 @@ dans le projet donc faut que ça matche avec ça...
 | Information retention | >95% |
 | Structure clarity | High |
 
-## Integration with Voice Tools
+## Filtering Rules
 
-### Wispr Flow
-1. Dictate with `Cmd+Shift+Space`
-2. Paste into Claude Code
-3. Run `/voice-refine`
+**Remove**: filler words ("euh", "um", "like", "basically"), repetitions, tangents, hedging ("maybe", "probably" unless relevant), politeness padding ("please", "could you").
 
-### Superwhisper
-1. Record with hotkey
-2. Text appears in active window
-3. Run `/voice-refine` to structure
-
-### macOS Dictation
-1. `Fn Fn` to start
-2. Speak naturally
-3. Run `/voice-refine` to clean up
-
-## What Gets Removed
-
-- Filler words: "euh", "um", "like", "you know", "basically"
-- Repetitions: same concept stated multiple ways
-- Tangents: off-topic thoughts
-- Hedging: "maybe", "I think", "probably" (unless relevant)
-- Politeness padding: "please", "could you", "I'd like"
-
-## What Gets Preserved
-
-- Technical requirements
-- Constraints and limitations
-- Context about existing code
-- Expected output format
-- Edge cases mentioned
-- Business logic rules
+**Preserve**: technical requirements, constraints, existing code context, expected output format, edge cases, business logic rules.
 
 ## See Also
 

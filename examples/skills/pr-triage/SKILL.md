@@ -1,9 +1,6 @@
 ---
 name: pr-triage
-description: >
-  4-phase PR backlog management: audit open PRs, deep review selected ones, post validated
-  review comments, and optionally create local worktrees for hands-on review. Args: "all"
-  to review all, PR numbers to focus (e.g. "42 57"), "en"/"fr" for language, no arg = audit only.
+description: "4-phase PR backlog management with audit, deep code review, validated comments, and optional worktree setup. Use when triaging pull requests, catching up on pending code reviews, or managing a backlog of open PRs. Args: 'all' to review all, PR numbers to focus (e.g. '42 57'), 'en'/'fr' for language, no arg = audit only."
 tags: [github, pr, triage, review, maintainer, multi-agent, worktree]
 ---
 
@@ -63,37 +60,27 @@ If either fails, stop and explain what is missing.
 ### Data Gathering (parallel commands)
 
 ```bash
-# Repo identity
 gh repo view --json nameWithOwner -q .nameWithOwner
-
-# Open PRs with full metadata (body for cross-reference issues)
 gh pr list --state open --limit 50 \
   --json number,title,author,createdAt,updatedAt,additions,deletions,changedFiles,isDraft,mergeable,reviewDecision,statusCheckRollup,body
-
-# Collaborators (to distinguish internal from external PRs)
 gh api "repos/{owner}/{repo}/collaborators" --jq '.[].login'
 ```
 
 **Collaborators fallback**: if `gh api .../collaborators` returns 403/404:
 ```bash
-# Extract authors from last 10 merged PRs
 gh pr list --state merged --limit 10 --json author --jq '.[].author.login' | sort -u
 ```
 If still ambiguous, ask via `AskUserQuestion`.
 
-For each PR, fetch existing reviews AND changed files:
+For each PR, fetch reviews and changed files:
 
 ```bash
 gh api "repos/{owner}/{repo}/pulls/{num}/reviews" \
   --jq '[.[] | .user.login + ":" + .state] | join(", ")'
-
-# Changed files (required for overlap detection)
 gh pr view {num} --json files --jq '[.files[].path] | join(",")'
 ```
 
-**Rate-limiting note**: fetching files requires N API calls (1 per PR). For repos with 20+ PRs, prioritize candidates for overlap detection (same functional domain, same author).
-
-**Note**: `author` is an object `{login: "..."}` — always extract `.author.login`.
+**Notes**: Fetching files requires 1 API call per PR — for 20+ PRs, prioritize overlap candidates. The `author` field is an object; always extract `.author.login`.
 
 ### Analysis
 
@@ -181,7 +168,6 @@ Note: Phase 3 (posting comments) is NOT offered here — it requires the drafts 
 After displaying the triage table, copy to clipboard using platform-appropriate command:
 
 ```bash
-# Detect platform and copy
 UNAME=$(uname -s)
 if [ "$UNAME" = "Darwin" ]; then
   pbcopy <<'EOF'

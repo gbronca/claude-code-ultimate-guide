@@ -1,6 +1,6 @@
 ---
 name: landing-page-generator
-description: Generate complete landing pages from repositories. Analyzes README, features, and structure to create static sites following established patterns. Use for new project landings, open-source showcases, documentation portals.
+description: "Generate complete, deploy-ready landing pages from any repository. Use when creating a homepage for an open-source project, building a project website, converting a README into a marketing page, or standardizing landing pages across multiple repos."
 tags: [landing-page, static-site, github-pages, marketing]
 ---
 
@@ -155,6 +155,14 @@ Generate these sections in order:
         └── static.yml      # GitHub Pages deployment
 ```
 
+### Step 5: Validation Checkpoint
+
+Before finalizing, verify:
+- All sections render correctly in a browser
+- Links point to valid targets (GitHub repo, docs, install commands)
+- Responsive layout works at mobile (375px), tablet (768px), and desktop (1280px) widths
+- Accessibility: skip links present, ARIA labels on interactive elements, color contrast passes WCAG AA
+
 ## Tech Stack
 
 - **No build step**: Pure HTML + CSS + JS
@@ -224,13 +232,6 @@ Creates `~/projects/my-project-landing/` with:
 - The skill preserves README language (English/French)
 - Review generated FAQ - may need customization
 - Test responsive design after generation
-
-## Related Use Cases
-
-- Open-source project showcases
-- Documentation portals
-- Product landing pages
-- Tool/utility marketing sites
 
 ## References
 

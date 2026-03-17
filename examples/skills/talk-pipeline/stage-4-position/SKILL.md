@@ -1,11 +1,8 @@
 ---
 name: talk-stage4-position
-description: Stage 4 — Strategic angles, titles, descriptions, peer feedback draft. Includes mandatory CHECKPOINT before script can start.
+description: "Generates 3-4 strategic talk angles with strength/weakness analysis, title options, CFP descriptions, and a peer feedback draft, then enforces a mandatory CHECKPOINT for user confirmation before scripting. Use when deciding how to frame a talk, preparing a CFP submission, or choosing between multiple narrative angles."
 tags: [talk, pipeline, presentation, stage-4, checkpoint]
-allowed-tools:
-  - Write
-  - Read
-  - AskUserQuestion
+allowed-tools: "Write, Read, AskUserQuestion"
 ---
 
 # Talk Stage 4: Position + CHECKPOINT

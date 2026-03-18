@@ -8101,7 +8101,7 @@ npx add-skill anthropics/claude-plugins-official  # CLAUDE.md auditor + automati
 | | frontend-design | 5.6K | anthropics |
 | **Database** | supabase-postgres-best-practices | 1K+ | supabase |
 | **Auth** | better-auth-best-practices | 2K+ | better-auth |
-| **Testing** | test-driven-development | 721 | obra |
+| **Testing** | test-driven-development | 721 | obra ([Superpowers](https://github.com/obra/superpowers)) |
 | **Media** | remotion-best-practices | New | remotion-dev |
 | **Meta** | skill-creator | 3.2K | anthropics |
 | **Tooling** | claude-md-improver | 472 | anthropics |

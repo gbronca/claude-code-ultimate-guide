@@ -866,3 +866,4 @@ Claude: Reads CLAUDE.md + @CLAUDE-api.md (relevant context only)
 - [OpenSpec Documentation](https://github.com/Fission-AI/OpenSpec)
 - [tdd-with-claude.md](./tdd-with-claude.md) — Combine with TDD
 - [Spec-to-Code Factory](https://github.com/SylvainChabaud/spec-to-code-factory) — Implémentation référence complète avec enforcement outillé (6 gates via Node.js, invariants "No Spec No Code" + "No Task No Commit", ~900K tokens/projet)
+- [Superpowers](https://github.com/obra/superpowers) — Plugin suite (95k+ stars) with a `brainstorming` skill that enforces spec-first as a mandatory gate: the agent refuses to write code until a spec has been reviewed and approved. Install: `/plugin install superpowers@claude-plugins-official`.

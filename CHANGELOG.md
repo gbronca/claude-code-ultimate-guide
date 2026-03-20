@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+- **README: Star History chart added** (`README.md`): Dynamic star growth chart from star-history.com embedded before the Contributing section. Shows the repo trajectory since January 2026 (0 → 2K+ stars). Renders live on GitHub via the star-history.com SVG API.
+
+- **Resource Evaluation — Arnaud Gaches "MCP vs CLI" (Dev with IA)** (`docs/resource-evaluations/arnaud-gaches-mcp-vs-cli-devwithia.md`): Score 2/5. Community synthesis from the Dev with IA Slack/LinkedIn (1500+ devs). Key contributions: three-phase historical arc (browser 2022-23 → IDE+MCP 2024-25 → CLI agents 2025-26), update on MCP token cost (author claims unused servers now inject 0 tokens), model-size heuristic (frontier models → CLI, small local models → MCP), enterprise case for MCP Remote (centralized updates, observability). Scored 2/5 for lack of verifiable sources and unclear attribution. Applied: historical arc intro added to `guide/ecosystem/mcp-vs-cli.md`.
+
+- **Guide update: historical arc intro in `mcp-vs-cli.md`** (`guide/ecosystem/mcp-vs-cli.md`): Two-sentence context paragraph added at the top explaining the interface evolution (browser → IDE+MCP → CLI agents, 2022-26) that frames why the MCP vs CLI question exists. Sourced from Arnaud Gaches community synthesis evaluation.
+
 ## [3.37.3] - 2026-03-20
 
 - **New skill: `eval-skills`** (`examples/skills/eval-skills/SKILL.md`): Skills-only audit tool with integrated effort-level inference engine. Discovers all SKILL.md files + flat skill files in `.claude/skills/`, scores each across 6 criteria (15 pts: name, description quality, allowed-tools scope, effort field, content structure, tags), infers appropriate `effort` level from content signals (mechanical → `low`, bounded analysis → `medium`, adversarial/architectural → `high`), flags mismatches between declared and inferred effort, and outputs a copy-paste ready patch block for missing/wrong effort fields. Portable across projects — drop in `.claude/skills/` and run `/eval-skills`. Guide updated with comparison vs `/audit-agents-skills` in the Validating Skills section.

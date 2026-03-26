@@ -10,13 +10,13 @@ tags: [reference, release]
 > **Full details**: [github.com/anthropics/claude-code/CHANGELOG.md](https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md)
 > **Machine-readable**: [claude-code-releases.yaml](../machine-readable/claude-code-releases.yaml)
 
-**Latest**: v2.1.83 | **Updated**: 2026-03-25
+**Latest**: v2.1.84 | **Updated**: 2026-03-26
 
 ---
 
 ## Quick Jump
 
-- [2.1.x Series (January-March 2026)](#21x-series-january-march-2026) — Worktree isolation, background agents, ConfigChange hook, Fast mode Opus 4.6, 1M context, claude.ai MCP connectors, remote-control, auto-memory, /copy command, HTTP hooks, worktree config sharing, ultrathink re-introduced, InstructionsLoaded hook, 4 security fixes, Agent model override restored, 12x SDK token cost reduction, /context actionable suggestions, modelOverrides setting, 1M context Opus 4.6 default for Max/Team/Enterprise, MCP elicitation, PostCompact hook, /effort command, Opus 4.6 64k/128k output tokens, allowRead sandbox setting, /branch command, StopFailure hook, streaming line-by-line, --console auth flag, SessionEnd fix, enterprise retry fix, rate_limits statusline field, effort frontmatter for skills, --channels MCP research preview, --bare flag, worktree session resume fix, MCP query collapsing, managed-settings.d/ drop-in, CwdChanged/FileChanged hooks, transcript search, credential scrubbing
+- [2.1.x Series (January-March 2026)](#21x-series-january-march-2026) — Worktree isolation, background agents, ConfigChange hook, Fast mode Opus 4.6, 1M context, claude.ai MCP connectors, remote-control, auto-memory, /copy command, HTTP hooks, worktree config sharing, ultrathink re-introduced, InstructionsLoaded hook, 4 security fixes, Agent model override restored, 12x SDK token cost reduction, /context actionable suggestions, modelOverrides setting, 1M context Opus 4.6 default for Max/Team/Enterprise, MCP elicitation, PostCompact hook, /effort command, Opus 4.6 64k/128k output tokens, allowRead sandbox setting, /branch command, StopFailure hook, streaming line-by-line, --console auth flag, SessionEnd fix, enterprise retry fix, rate_limits statusline field, effort frontmatter for skills, --channels MCP research preview, --bare flag, worktree session resume fix, MCP query collapsing, managed-settings.d/ drop-in, CwdChanged/FileChanged hooks, transcript search, credential scrubbing, PowerShell tool Windows preview
 - [2.0.x Series (Nov 2025 - Jan 2026)](#20x-series-november-2025---january-2026) — Opus 4.5, Claude in Chrome, Background agents
 - [Breaking Changes Summary](#breaking-changes-summary)
 - [Milestone Features](#milestone-features)
@@ -24,6 +24,41 @@ tags: [reference, release]
 ---
 
 ## 2.1.x Series (January-March 2026)
+
+### v2.1.84 (2026-03-26)
+
+- **New**: PowerShell tool for Windows (opt-in preview) — direct PowerShell access alongside Bash tool. Learn more at https://code.claude.com/docs/en/tools-reference#powershell-tool
+- **New**: `TaskCreated` hook fires when a task is created via `TaskCreate`
+- **New**: `WorktreeCreate` hook now supports `type: "http"` — return the created worktree path via `hookSpecificOutput.worktreePath` in the response JSON
+- **New**: `allowedChannelPlugins` managed setting for team/enterprise admins to define a channel plugin allowlist
+- **New**: `ANTHROPIC_DEFAULT_{OPUS,SONNET,HAIKU}_MODEL_SUPPORTS` env vars to override effort/thinking capability detection for pinned models on Bedrock, Vertex, Foundry; `_MODEL_NAME`/`_DESCRIPTION` to customize the `/model` picker label
+- **New**: `CLAUDE_STREAM_IDLE_TIMEOUT_MS` env var to configure the streaming idle watchdog threshold (default 90s)
+- **New**: Idle-return prompt nudging users back after 75+ minutes to `/clear`, reducing unnecessary token re-caching on stale sessions
+- **New**: Deep links (`claude-cli://`) now open in your preferred terminal instead of whichever terminal is detected first
+- **New**: `x-client-request-id` header added to API requests for debugging timeouts
+- **New**: Rules and skills `paths:` frontmatter now accepts a YAML list of globs
+- **New**: MCP tool descriptions and server instructions capped at 2KB to prevent OpenAPI-generated servers from bloating context
+- **New**: `ANTHROPIC_CUSTOM_MODEL_OPTION` env var to add a custom entry to the `/model` picker
+- **New**: Managed settings can now be set via macOS plist or Windows Registry
+- **Improved**: Global system-prompt caching now works when `ToolSearch` is enabled, including for users with many MCP tools
+- **Improved**: Better dangerous-removal detection for Windows drive roots (`C:\`, `C:\Windows`, etc.)
+- **Improved**: Interactive startup ~30ms faster (parallel `setup()` with slash command/agent loading)
+- **Improved**: Stats screenshot (Ctrl+S in `/stats`) now works in all builds and is 16x faster
+- **Improved**: p90 prompt cache hit rate improved
+- **Fixed**: `ANTHROPIC_BETAS` environment variable being silently ignored when using Haiku models
+- **Fixed**: Startup performance issue on partial clone repositories (Scalar/GVFS) that triggered mass blob downloads
+- **Fixed**: Spurious "Not logged in" errors on macOS caused by transient keychain read failures
+- **Fixed**: Cold-start race where core tools could be deferred without their bypass active (Edit/Write failing with InputValidationError)
+- **Fixed**: Native terminal cursor not tracking input caret (IME composition for CJK now renders inline)
+- **Fixed**: Workflow subagents failing with API 400 when outer session uses `--json-schema` and subagent also specifies a schema
+- **Fixed**: Hang when generating attachment snippets for large edited files; MCP tool/resource cache leak on reconnect
+- **Fixed**: Voice push-to-talk leaking characters into text input; transcripts now insert at correct position
+- **Fixed**: `Ctrl+U` (kill-to-line-start) being a no-op at line boundaries in multiline input
+- **Fixed**: Null-unbinding a default chord binding still entering chord-wait mode instead of freeing the prefix key
+- **Changed**: Issue/PR references only become clickable links when written as `owner/repo#123` — bare `#123` no longer auto-linked
+- **Changed**: Slash commands unavailable for current auth setup (`/voice`, `/mobile`, `/chrome`, `/upgrade`, etc.) are now hidden instead of shown
+- **VSCode**: Added rate limit warning banner with usage percentage and reset time
+- **VSCode**: Fixed Windows PATH inheritance for Bash tool regression (regression from v2.1.78 fix)
 
 ### v2.1.83 (2026-03-25)
 

@@ -3,8 +3,8 @@
 # Purpose: Track Claude Code product releases for documentation sync
 # Maintained: Manual updates when new releases are announced
 
-latest: "2.1.83"
-updated: "2026-03-25"
+latest: "2.1.84"
+updated: "2026-03-26"
 
 # ════════════════════════════════════════════════════════════════
 # RELEASES (newest first, condensed highlights only)
@@ -14,6 +14,16 @@ releases:
   # ─────────────────────────────────────────────────────────────
   # 2.1.x Series (January-March 2026)
   # ─────────────────────────────────────────────────────────────
+
+  - version: "2.1.84"
+    date: "2026-03-26"
+    highlights:
+      - "⭐ PowerShell tool for Windows (opt-in preview) — direct PowerShell access alongside Bash tool"
+      - "TaskCreated hook fires when a task is created via TaskCreate; WorktreeCreate hook supports type: 'http'"
+      - "Global system-prompt caching now works when ToolSearch is enabled (better cache hit rates for MCP users)"
+      - "ANTHROPIC_DEFAULT_{OPUS,SONNET,HAIKU}_MODEL_SUPPORTS env vars to override effort/thinking detection for 3p providers"
+      - "allowedChannelPlugins managed setting; idle-return prompt after 75+ min suggesting /clear"
+      - "Fixed startup perf on partial clone repos (Scalar/GVFS); Fixed spurious 'Not logged in' errors on macOS keychain"
 
   - version: "2.1.83"
     date: "2026-03-25"

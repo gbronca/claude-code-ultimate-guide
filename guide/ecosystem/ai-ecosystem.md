@@ -2672,6 +2672,122 @@ classDiagram
 
 ---
 
+## 13. Autonomous Research Loops (autoresearch pattern)
+
+**Source**: [karpathy/autoresearch](https://github.com/karpathy/autoresearch) — 57K stars in 3 weeks (March 2026)
+
+The autoresearch pattern lets an AI agent run improvement iterations overnight with zero human involvement per loop. Originally designed for ML research, the same pattern applies to code quality, refactoring, and any task with an objective, measurable metric.
+
+### The Core Loop
+
+```
+measure → propose change → apply → re-measure → keep if better / git reset if not → repeat
+```
+
+Four ingredients make it work:
+
+1. **One objective metric** — a number you want to move (lower or higher). No ambiguity, no judgment calls. Example: `grep -r "as any" src/ | wc -l`
+2. **A fixed budget** — one atomic change per iteration (or a time budget for ML). Keeps iterations comparable.
+3. **Git as rollback** — bad changes disappear with `git checkout -- .`. No damage accumulates.
+4. **`program.md`** — a Markdown file that defines what the agent can/cannot do. This is identical in structure to a CLAUDE.md or skill file.
+
+### What karpathy/autoresearch Does
+
+The original repo runs autonomous ML research on a single GPU:
+
+| Component | Role |
+|-----------|------|
+| `train.py` | The only file the agent edits (model, optimizer, architecture) |
+| `prepare.py` | Fixed harness — data, tokenizer, evaluation. Read-only. |
+| `program.md` | Agent behavior contract — budget, constraints, what to explore |
+| Metric | `val_bpb` (validation bits per byte) — lower = better |
+| Budget | 5-minute wall-clock per experiment |
+| On improvement | `git commit` |
+| On regression | `git reset --hard HEAD` |
+
+Result: ~100 experiments per 8-hour sleep on an H100. Two merged commits in the repo itself are `Co-Authored-By: Claude Opus 4.6` — the agent ran autoresearch on autoresearch.
+
+### Adapting to Code Quality
+
+The same loop works for mechanical code improvements. Swap the ML metric for a grep count:
+
+| ML Research | Code Quality |
+|-------------|-------------|
+| Modify `train.py` | Modify `src/` files |
+| Measure `val_bpb` | Measure `grep pattern src/ | wc -l` |
+| 5-minute GPU budget | One atomic change per iteration |
+| Keep if `val_bpb` improves | Keep if count decreases |
+| `git reset` if not | `git checkout -- .` if not |
+| `program.md` = agent skill | `program.md` = agent skill |
+
+**Example loops for TypeScript codebases:**
+
+| Loop | Metric | Target |
+|------|--------|--------|
+| `loop-remove-as-any` | `grep " as any" src/` | 0 |
+| `loop-export-fn` | `grep "export function " src/` | 0 |
+| `loop-interface-type` | `grep "export interface " src/` | 0 |
+| `loop-eslint-disable` | `grep "eslint-disable" src/` | 0 |
+
+### The `program.md` Pattern
+
+`program.md` is the most important file — it encodes what the agent is allowed to do. Never auto-generate it. Write it yourself per loop to capture your codebase's constraints.
+
+```markdown
+# Program: loop-remove-as-any
+
+## Objective
+Reduce `as any` casts in src/ to 0. One change per iteration.
+
+## Measurement
+bash scripts/autoresearch/loop-remove-as-any/measure.sh
+Lower = better. Target: 0.
+
+## What you CAN do
+- Replace `x as any` with a proper type or `unknown`
+- Add a type assertion with justification comment
+
+## What you CANNOT do
+- Modify test files
+- Change public API signatures
+- Touch files outside src/
+
+## Stop when
+Metric = 0, or no more mechanical replacements exist.
+```
+
+This is structurally identical to a CLAUDE.md behavioral rule file, applied to a single autonomous task.
+
+### Scaffold with Claude Code
+
+Use the `/autoresearch` command (available in [examples/commands/](../../examples/commands/autoresearch.md)) to scan your codebase, detect improvement opportunities, and scaffold the mechanical files:
+
+```
+/autoresearch                              # Scan + propose loops
+/autoresearch --scaffold loop-remove-as-any  # Generate measure.sh, direction.txt, files.txt
+/autoresearch --run loop-remove-as-any       # Start the autonomous loop
+/autoresearch --status                       # Check all loops
+```
+
+### When to Use This Pattern
+
+Works well for:
+- **Mechanical refactoring** with a clear rule (rename pattern, remove anti-pattern, enforce convention)
+- **Coverage improvement** (target: higher, metric: `jest --coverage | grep Statements`)
+- **Dependency reduction** (files importing a deprecated module)
+- **Any grep-countable metric** that moves in one direction
+
+Does not work for:
+- Tasks requiring judgment or business context per change
+- Metrics without a clear direction (style opinions, architectural trade-offs)
+- Changes where "worse is sometimes acceptable" for other reasons
+
+### Safety Properties
+
+The pattern is safe because of the git rollback guarantee. The agent never accumulates bad changes — every regression disappears immediately. The only risk is if your `program.md` constraints are too loose. Write tight constraints, then widen if needed.
+
+---
+
 ## Alternative Providers (Community Workarounds)
 
 > ⚠️ **Disclaimer**: This section documents techniques that exist in the community

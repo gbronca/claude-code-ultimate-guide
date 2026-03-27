@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+- `guide/ecosystem/ai-ecosystem.md` §13 Autonomous Research Loops: documents the autoresearch pattern from [karpathy/autoresearch](https://github.com/karpathy/autoresearch) (57K stars, March 2026). Covers the core loop (measure → change → re-measure → keep/revert), the `program.md` behavior contract, ML-to-code-quality adaptation table, safety properties via git rollback, and when to use/avoid the pattern.
+- `examples/commands/autoresearch.md`: new command template implementing the autoresearch loop for code quality. Four modes: scan (propose loops), scaffold (generate measure.sh + direction.txt + files.txt), run (autonomous iterations), status (all loops overview). Includes `program.md` writing guide and ML vs code quality comparison table.
+
 ### Fixed
 - `guide/workflows/code-review.md` cross-reference section: replaced broken `../ultimate-guide.md#multi-agent-code-review` anchor (heading didn't exist) with bare `#split-role-sub-agents` so the landing build script resolves it to `/guide/ultimate-guide/04-agents/#split-role-sub-agents`. Removed broken `/en/gitlab-ci-cd` hyperlink (Anthropic docs URL, not valid on cc.bruniaux.com) — kept as plain text.
 

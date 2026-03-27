@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [3.37.6] - 2026-03-26
+
+### Added
+- `/investigate` command (`examples/commands/investigate.md`): root-cause debugging. Iron Law enforcement, 5-phase workflow, failure pattern table (6 modes), 3-strike escalation, blast radius gate. Inspired by gstack/investigate.
+- `/qa` command (`examples/commands/qa.md`): browser QA testing with diff-aware scoping. 3 tiers, 7-category issue taxonomy × 4 severities, PASS/WARN/FAIL health scores, fix-verify loop. Inspired by gstack/qa.
+- `/canary` command (`examples/commands/canary.md`): post-deploy monitoring. Baseline capture, 10-min loop, transient tolerance (2+ checks), 4 alert levels, curl-based platform-agnostic. Inspired by gstack/canary.
+- `/land-and-deploy` command (`examples/commands/land-and-deploy.md`): merge-to-verify pipeline. Pre-flight → CI wait → merge → platform detection (Fly/Render/Vercel/Netlify/Heroku/Railway) → canary verify → revert. Inspired by gstack/land-and-deploy.
+- `guide/core/settings-reference.md`: complete settings.json and env vars reference (1,284 lines, v2.1.81).
+
+### Changed
+- `/review-pr` enhanced: scope drift detection (plan vs diff cross-ref), Fix-First heuristic, LLM Output Trust Boundary review category. Inspired by gstack/review/checklist.md.
+- `IDEAS.md`: deferred gstack patterns captured (autoplan, office-hours, freeze/unfreeze, retro, design-review, benchmark).
+
 ### Changed
 
 - **update(guide/section-1.6)**: rewrite "Migrating from Other AI Coding Tools" with March 2026 fact-checked data (closes #12). GitHub Copilot: agent mode GA, MCP GA, full codebase context, multi-model selection, updated pricing tiers (Free/$10/$39 Pro+). Cursor: agent mode GA, Background Agents, MCP Apps v2.6. Windsurf: pricing raised to $20 (Cognition AI acquisition), Cascade still core. Zed: Zeta2 autocomplete, subagents, up to 1M token context, MCP with OAuth. Removed all factually false claims ("suggestions only", "current file", "weak debugging") and replaced with honest differentiators (terminal-native, persistent context system, headless/CI mode, agent orchestration). Added pricing comparison table. Fixed cc-copilot-bridge tier naming (Pro+ -> Pro, $10/mo).

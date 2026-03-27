@@ -6,8 +6,8 @@
 
 - Title: Claude Code Ultimate Guide
 - Author: Florian Bruniaux (Founding Engineer @ Méthode Aristote)
-- Version: 3.37.5
-- Last Updated: March 23, 2026
+- Version: 3.37.6
+- Last Updated: March 26, 2026
 - License: CC BY-SA 4.0 (free, open source)
 - Lines of Documentation: 23,800+
 - Production Templates: 223

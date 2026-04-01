@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+- **Methodology Quiz (landing)**: New `/methodologies/` page on `cc.bruniaux.com`. Interactive 12-question quiz recommends one of 8 methodology stacks based on team size, project stage, session style, test maturity, and more. Full decision matrix with Combination Patterns table, two-axis map, and 8 stack cards with quick-start prompts. Linked from home page Methodologies section, header nav, footer, and sitemap.
+
 - **Methodology Map**: Added 2D positioning diagram to `guide/core/methodologies.md` (between Decision Tree and The 15 Methodologies sections). Maps all 20 methodologies on Spec-First/Code-First (Y) vs Lean/Enterprise (X) axes, with quadrant labels and reading guide. Synced to landing guide reader.
 
 - **WP09 update (v3.27.6 → v3.38.1)**: Updated both FR (`09-apprendre-avec-ia.qmd`) and EN (`09-learning-with-ai.qmd`) whitepapers to integrate v3.37.0–v3.38.1 changes: (1) Agent Adoption Curve — 7-level maturity scale from Nicolas Martignole/Back Market, inserted as new "Où en Êtes-Vous?" section after the Three Patterns diagnosis; (2) "Job is now the spec" reframing (Larridin/Kanitkar) — developer as producer/director, mastery = spec-writing quality, added in Augmented Pattern section; (3) JiT Tests as comprehension exercise — Meta production results (4x hardening tests, 70% review load reduction), brief mention in Augmented Pattern advanced techniques. Added 2 new source entries in Practitioners table.

@@ -17,7 +17,7 @@ Annotated templates that teach you **why** patterns work, not just how to config
 | [`agents/`](./agents/) | Custom AI personas for specialized tasks | 14 + 2 collections |
 | [`commands/`](./commands/) | Slash commands (workflow automation) | 32 |
 | [`hooks/`](./hooks/) | Event-driven security & automation scripts | 34 |
-| [`skills/`](./skills/) | Reusable knowledge modules — [9 on SkillHub](https://skills.palebluedot.live/owner/FlorianBruniaux) | 17 |
+| [`skills/`](./skills/) | Reusable knowledge modules — [9 on SkillHub](https://skills.palebluedot.live/owner/FlorianBruniaux) | 18 |
 | [`claude-md/`](./claude-md/) | CLAUDE.md configuration profiles | 7 |
 | [`config/`](./config/) | Settings, MCP, git templates | 8 |
 | [`memory/`](./memory/) | CLAUDE.md memory file templates | 2 |
@@ -77,10 +77,11 @@ Annotated templates that teach you **why** patterns work, not just how to config
 | [analytics-with-eval/](./agents/analytics-with-eval/) | Collection: analytics agent + evaluation hooks | — |
 | [cyber-defense/](./agents/cyber-defense/) | Collection: anomaly detector, log ingestor, risk classifier, threat reporter | — |
 
-### Skills (17) — [9 on SkillHub](https://skills.palebluedot.live/owner/FlorianBruniaux)
+### Skills (18) — [9 on SkillHub](https://skills.palebluedot.live/owner/FlorianBruniaux)
 
 | File | Purpose |
 |------|---------|
+| [token-audit/](./skills/token-audit/) | Measure fixed-context token overhead, classify rules by usage frequency, audit hook cost, produce prioritized action plan |
 | [design-patterns/](./skills/design-patterns/) | Detect and analyze GoF design patterns with stack-aware suggestions |
 | [tdd-workflow.md](./skills/tdd-workflow.md) | Test-Driven Development process |
 | [security-checklist.md](./skills/security-checklist.md) | OWASP Top 10 security checks |

@@ -27,6 +27,7 @@ This guide covers everything from the token math behind context budgets to build
 7. [Quality Measurement](#7-quality-measurement)
 8. [Context Reduction Techniques](#8-context-reduction-techniques)
 9. [Maturity Assessment](#9-maturity-assessment)
+10. [Token Audit Workflow](#10-token-audit-workflow)
 
 ---
 
@@ -1431,6 +1432,195 @@ Answer each question. Stop at the first "No" — that is your current level.
 | 5 | Maintain quarterly audits. The system is built — the work is ongoing calibration. |
 
 Most teams move from Level 0 to Level 2 in a single afternoon. Moving from Level 3 to Level 4 requires a measurement habit, not more configuration. The bottleneck at the higher levels is not knowledge — it is the discipline to treat configuration as a living system rather than a one-time setup.
+
+---
+
+## 10. Token Audit Workflow
+
+Context engineering theory only converts to real gains once you measure your actual overhead. Most developers discover they are loading 40-60K tokens of fixed context before any user task begins — configuration files, rules, hooks output, memory files, and the Claude Code system prompt all compound. This section provides a reproducible audit workflow that takes under five minutes and produces an actionable plan.
+
+### What Counts as Fixed Context
+
+Every session starts with a baseline of tokens that Claude loads before processing a single user message:
+
+| Component | Loaded when | Typical size |
+|-----------|-------------|--------------|
+| `~/.claude/CLAUDE.md` + `@imports` | Always | 5-15K tokens |
+| Project `CLAUDE.md` | Always | 2-8K tokens |
+| `.claude/rules/*.md` (auto-loaded) | Always | 5-40K tokens |
+| `MEMORY.md` (project memory) | Always | 1-3K tokens |
+| Claude Code system prompt | Always | ~7,500 tokens |
+| Hook output | Per tool call | 0.1-2K tokens × call frequency |
+| `.claude/commands/*.md` | On invocation only | 0 by default |
+| `.claude/agents/*.md` | On invocation only | 0 by default |
+
+The critical distinction: `.claude/rules/` loads every `.md` file at session start regardless of relevance. Commands and agents are lazy-loaded — they cost nothing until invoked. Rules files are the most common source of unexpected overhead.
+
+### Step 1 — Measure the Components
+
+Run these commands from your project root to get a breakdown by component:
+
+```bash
+# Project CLAUDE.md
+echo "=== PROJECT CLAUDE.md ===" && wc -c CLAUDE.md
+
+# Rules files sorted by size (your biggest opportunity)
+echo "=== RULES FILES ===" && find .claude/rules -name "*.md" 2>/dev/null \
+  | xargs wc -c 2>/dev/null | sort -rn | head -20
+
+# Global config files
+echo "=== GLOBAL ~/.claude ===" && ls -la ~/.claude/*.md 2>/dev/null \
+  | awk '{print $5, $9}' | sort -rn
+```
+
+### Step 2 — Calculate Your Token Budget
+
+Tokens ≈ characters ÷ 4 (rough but reliable for English/code mix).
+
+```bash
+# Full budget estimate
+GLOBAL=$(cat ~/.claude/CLAUDE.md ~/.claude/*.md 2>/dev/null | wc -c)
+PROJECT=$(wc -c < CLAUDE.md 2>/dev/null || echo 0)
+RULES=$(find .claude/rules -name "*.md" 2>/dev/null | xargs cat | wc -c)
+MEMORY=$(find ~/.claude/projects -name "MEMORY.md" -path "*$(pwd | tr '/' '-')*" \
+  2>/dev/null | xargs cat 2>/dev/null | wc -c || echo 0)
+TOTAL=$(( GLOBAL + PROJECT + RULES + MEMORY + 30000 ))
+
+echo "Global ~/.claude   : ~$(( GLOBAL / 4 )) tokens"
+echo "Project CLAUDE.md  : ~$(( PROJECT / 4 )) tokens"
+echo "Rules (auto-loaded): ~$(( RULES / 4 )) tokens"
+echo "MEMORY.md          : ~$(( MEMORY / 4 )) tokens"
+echo "System prompt      : ~7,500 tokens (estimate)"
+echo "---"
+echo "TOTAL              : ~$(( TOTAL / 4 )) tokens"
+```
+
+For context: Claude's window is 200K tokens. A 60K fixed overhead means 30% consumed before any work begins. Against a typical coding task that uses 20-40K additional tokens, that leaves less than half the window for actual output.
+
+### Step 3 — Classify Rules by Usage Frequency
+
+The rules files are usually where the biggest savings live. For each file in `.claude/rules/`, ask one question: how often is this relevant in a typical session?
+
+| Class | Definition | Action |
+|-------|------------|--------|
+| **Always critical** | Applies to every task (coding conventions, output format, safety rules) | Keep auto-loaded |
+| **Sometimes needed** | Relevant in 20-40% of sessions (debugging methodology, task management) | Keep auto-loaded if small; consider on-demand if large |
+| **Rarely needed** | Relevant in under 10% of sessions (Figma workflow, Windows compatibility, design system) | Remove from auto-load |
+| **Never needed** | Outdated, covered elsewhere, or not relevant to this project | Delete or archive |
+
+Run this classification as a prompt:
+
+```
+Read every file in .claude/rules/. For each file, classify it as:
+- ALWAYS: applies to most tasks in a typical session
+- SOMETIMES: applies in 20-40% of sessions
+- RARELY: applies in under 10% of sessions
+
+Output a table: | File | Size (chars) | Class | Reasoning |
+Sort by size descending within each class.
+Calculate: total chars that could be removed from auto-load if RARELY files
+are excluded.
+```
+
+### Step 4 — Audit Hook Overhead
+
+Hooks that fire on `PreToolUse` or `PostToolUse` run on every tool call. Each invocation injects its stdout into the context. A hook that outputs 500 characters per call, running 150 times per session, adds 75K characters (~19K tokens) to the session context.
+
+To check your hooks:
+
+```bash
+# List all hooks and their event types
+cat ~/.claude/settings.json | python3 -c "
+import json, sys
+data = json.load(sys.stdin)
+hooks = data.get('hooks', {})
+for event, hook_list in hooks.items():
+    for h in hook_list:
+        cmd = h.get('command', h.get('hooks', [{}])[0].get('command', '?'))
+        print(f'{event}: {cmd[:80]}')
+"
+```
+
+For each `PreToolUse` or `PostToolUse` hook, estimate its output size by running it manually and measuring stdout. Multiply by your average tool calls per session (check `/cost` after a typical session to get the tool call count).
+
+**High-overhead patterns to look for:**
+- Hooks that `cat` files or print multi-line summaries on every call
+- Hooks that run `git status` or `git log` unconditionally
+- `echo` statements used for debugging that were never removed
+
+### Step 5 — Build the Action Plan
+
+Typical savings without RAG or custom infrastructure:
+
+| Action | Effort | Risk | Typical savings |
+|--------|--------|------|----------------|
+| Remove "auto-loaded" from rarely-used rules | 30 min | Low | 5-20K tokens |
+| Split large rules files into core + detail | 1-2h | Low | 3-8K tokens |
+| Trim hook stdout to essential fields | 1h | Low | 2-10K tokens |
+| Compress verbose rules (see §8) | 1-2h | Low | 2-5K tokens |
+| Archive outdated MEMORY.md entries | 30 min | Low | 1-2K tokens |
+
+A realistic first pass typically yields 30-50% reduction in fixed context without touching anything that requires infrastructure.
+
+### The RAG Question
+
+You may encounter advice to move rules files into a vector database and retrieve them dynamically (RAG). This is a valid optimization at scale — it converts fixed overhead into per-query retrieval and enables precise lazy-loading.
+
+Before investing in that infrastructure, verify the math honestly:
+
+- How many tokens would you actually save? (Measure first with Steps 1-3)
+- What is the setup cost? A pgvector or Chroma setup with a custom MCP server is a 1-2 week project for a working team
+- At what point does the break-even occur? If your fixed context is already under 20K tokens after simple cleanup, RAG adds complexity for marginal gain
+
+For most individual developers and small teams, classification-based lazy loading (removing the auto-load tag from rarely-used files) achieves 80% of the gains at 2% of the infrastructure cost. RAG earns its complexity when you have 50+ rule files and need automated, intent-based loading.
+
+### Audit Prompt Template
+
+The following prompt produces a complete audit report when run inside a project. Replace the path variables as needed:
+
+```
+# Token Audit — [PROJECT NAME]
+
+Audit this Claude Code project configuration for token overhead.
+Be systematic and exhaustive, not superficial.
+
+**Step 1 — Inventory**
+List every file that is loaded at session start:
+- ~/.claude/CLAUDE.md and all @imported files (with line counts)
+- ./CLAUDE.md (line count)
+- .claude/rules/*.md (all files, sorted by size)
+- Project MEMORY.md (line count)
+
+For each file, note: lines, approximate tokens (chars ÷ 4), and one-sentence
+description of what it contains.
+
+**Step 2 — Budget calculation**
+Calculate: total fixed-context tokens before any user task.
+Show the breakdown by component. Express as % of Claude's 200K window.
+
+**Step 3 — Signal/noise classification**
+For every rules file, classify as ALWAYS / SOMETIMES / RARELY based on how
+often it would apply in a typical session on this project.
+Flag any file over 5K chars that is classified SOMETIMES or RARELY.
+
+**Step 4 — Hook audit**
+Read .claude/settings.json (and ~/.claude/settings.json).
+For each hook: event type, command, estimated stdout per invocation, and
+whether it fires on every tool call or only at session boundaries.
+Flag hooks that inject more than 200 chars per PreToolUse or PostToolUse call.
+
+**Step 5 — Action plan**
+Produce a prioritized table:
+| Action | Estimated token savings | Effort | Risk |
+Sort by: savings descending, then effort ascending.
+Include only actions achievable without external infrastructure (no RAG, no
+vector databases, no custom MCP servers).
+
+**Step 6 — RAG verdict**
+Based on the remaining savings after Step 5, calculate whether RAG would be
+worth it: estimate residual savings, estimate setup cost in hours, and state
+clearly whether the infrastructure investment is justified.
+```
 
 ---
 

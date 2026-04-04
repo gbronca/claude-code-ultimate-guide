@@ -8,6 +8,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+- **`/token-audit` skill** (`examples/skills/token-audit/`, also installed in `~/.claude/skills/`): Runnable skill that executes the full token audit — measures fixed-context overhead per component, classifies rules files (ALWAYS/SOMETIMES/RARELY), audits hook stdout per invocation, and produces a prioritized action plan with savings estimates. Includes RAG break-even assessment.
+
+- **Token Audit Workflow** (`guide/core/context-engineering.md` §10): New section with step-by-step workflow to measure and reduce fixed context overhead — shell commands to inventory all loaded components, token budget calculator, signal/noise classification framework (ALWAYS/SOMETIMES/RARELY), hook overhead analysis, action plan template, and a reusable audit prompt. Includes honest RAG assessment (break-even analysis before committing to vector infrastructure).
+
 - **Guide export script**: `scripts/generate-guide-exports.sh` — generates the full `guide/ultimate-guide.md` (~25K lines) as EPUB (488K) and PDF (2.9 MB) via pandoc + Typst. Outputs to `dist/`. Supports `--epub`, `--pdf`, `-o DIR`, `-v` flags. Auto-detects Typst from Quarto's bundled binary. PDF pre-processing strips internal anchor links for Typst compatibility.
 
 ### Updated

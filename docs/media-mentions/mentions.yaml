@@ -1,6 +1,6 @@
 meta:
   last_updated: "2026-04-14"
-  total_mentions: 21
+  total_mentions: 25
   notes: >
     Source of truth for all external mentions of the Claude Code Ultimate Guide
     (GitHub + cc.bruniaux.com). Add new entries as you discover them.
@@ -20,7 +20,7 @@ mentions:
     title: "This GitHub guide teaches Claude Code like a course — 2K stars in weeks"
     author: "AI for Automation"
     date: "2026-03-19"
-    angle: "Full course framing — 23K+ lines, 204 templates, 271 quiz questions, 2K stars"
+    angle: "Full course framing — 23K+ lines, 16 specialized guides, 204 templates, 271 quiz questions, 2K stars. Emphasizes security section (threat DB, CVE, abuse patterns) as original differentiator."
     reach: unknown
     status: active
     notes: "Centred entirely on the guide. Strong SEO title."
@@ -29,10 +29,10 @@ mentions:
   - id: "002"
     platform: article
     url: "https://lidarmonitor.kapernikov.com/news/claude-code-ultimate-guide-guide-ultimate-guide-md-at-main"
-    title: "Claude Code Ultimate Guide Md At Main"
+    title: "The Ultimate Guide to CLAUDE.md in 2026"
     author: "LidarMonitor / Kapernikov"
     date: null
-    angle: "CLAUDE.md + official doc context, links to GitHub + cc.bruniaux.com"
+    angle: "Listed as reference for configuring CLAUDE.md and understanding Claude Code beyond official docs"
     reach: unknown
     status: active
     notes: null
@@ -278,5 +278,55 @@ mentions:
     reach: unknown
     status: active
     notes: "Interesting: they indexed the CLAUDE.md specifically."
+    first_seen: "2026-04-14"
+
+  - id: "022"
+    platform: directory
+    url: "https://trendshift.io/repositories/23471"
+    title: "Trendshift — FlorianBruniaux/claude-code-ultimate-guide"
+    author: "Trendshift.io"
+    date: null
+    angle: "'Tremendous feat of documentation' — tagged #AI-coding-assistant #MCP #Programming-examples"
+    reach: unknown
+    status: active
+    notes: "GitHub trending tracker. Good for SEO backlinks."
+    first_seen: "2026-04-14"
+
+  - id: "023"
+    platform: directory
+    url: "https://github.com/hesreallyhim/awesome-claude-code/issues/652"
+    title: "Awesome Claude Code — GitHub issue #652: [Resource] Claude Code Ultimate Guide"
+    author: "GitHub community"
+    date: null
+    angle: "Proposal to add the guide as resource — detailed breakdown (templates, quiz, hooks, TDD/SDD/BDD workflows, licenses CC BY-SA + CC0)"
+    reach: unknown
+    status: active
+    notes: "Issue includes wc -l / find commands to verify claims. Shows community vetting depth."
+    first_seen: "2026-04-14"
+
+  # ─── Articles (new) ───────────────────────────────────────────────────────
+
+  - id: "024"
+    platform: article
+    url: "https://emipanelli.com/claude-code-ultimate-guide/"
+    title: "Claude Code Ultimate Guide — blog post (ES)"
+    author: "Emiliano Panelli"
+    date: null
+    angle: "Presents the guide as 'obligatory' for learning Claude Code — 22K lines, 218 templates, 271 questions, 41 diagrams, 24 CVE, 655 malicious skills. Highlights TDD/SDD/BDD workflows and threat DB as key differentiators."
+    reach: unknown
+    status: active
+    notes: "Spanish-language blog post. First non-EN/FR mention found. Deep analysis, not just a listing."
+    first_seen: "2026-04-14"
+
+  - id: "025"
+    platform: article
+    url: "https://aimaker.substack.com/p/claude-code-project-setup-guide"
+    title: "How to Set Up Any Project in Claude Code – The Three-Phase Setup"
+    author: "The AI Maker (Substack)"
+    date: null
+    angle: "Positions the guide as conceptual prerequisite ('understand full capabilities') before following Dump > Refine > Audit workflow"
+    reach: unknown
+    status: active
+    notes: "Substack newsletter. Guide cited as prerequisite, not just resource — stronger framing."
     first_seen: "2026-04-14"
 

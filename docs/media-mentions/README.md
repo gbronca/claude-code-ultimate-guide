@@ -36,12 +36,21 @@ Tracks all external sources that mention the Claude Code Ultimate Guide (GitHub 
 
 | Platform | Count |
 |---|---|
-| Articles / blogs | 3 |
+| Articles / blogs | 5 |
 | Podcasts | 1 |
 | Reddit | 3 |
 | LinkedIn (own) | 2 |
 | LinkedIn (third-party) | 5 |
 | Twitter / X | 2 |
 | Instagram | 1 |
-| Directories / registries | 4 |
-| **Total** | **21** |
+| Directories / registries | 6 |
+| **Total** | **25** |
+
+### Languages spotted
+
+| Language | Mentions |
+|---|---|
+| English | 20 |
+| French | 3 |
+| Spanish | 1 |
+| Unknown | 1 |

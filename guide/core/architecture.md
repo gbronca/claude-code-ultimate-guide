@@ -50,13 +50,38 @@ Each claim is marked with its confidence level. **Always prefer official documen
 
 ## Visual Overview
 
-Before diving into the technical details, this diagram by Mohamed Ali Ben Salem captures the essential architecture:
+Claude Code is not a new AI model. It's an orchestration layer that wraps Claude (Opus/Sonnet/Haiku) with the ability to read files, run shell commands, navigate repositories, and spawn sub-agents — all in a continuous loop until the task is done.
 
-![Claude Code Architecture Overview](./images/claude-code-architecture-overview.jpeg)
+```mermaid
+flowchart TB
+    DEV([Developer]) --> CC
 
-*Source: [Mohamed Ali Ben Salem on LinkedIn](https://www.linkedin.com/posts/mohamed-ali-ben-salem-2b777b9a_en-ce-moment-je-vois-passer-des-posts-du-activity-7420592149110362112-eY5a) — Used with attribution*
+    subgraph CC["Claude Code — Orchestration Layer"]
+        CLAUDE["Claude Model\n(Opus / Sonnet / Haiku)"]
+        TOOLS["Tool Arsenal\n(Read · Edit · Bash · Task · Grep…)"]
+        CLAUDE <--> TOOLS
+    end
 
-**Key insight**: Claude Code is NOT a new AI model — it's an orchestration layer that connects Claude (Opus/Sonnet/Haiku) to your development environment through file editing, command execution, and repository navigation.
+    CC --> ENV
+
+    subgraph ENV["Your Development Environment"]
+        FS[File System]
+        GIT[Git Repository]
+        SHELL[Shell / CLI]
+        MCP[MCP Servers]
+    end
+
+    style CC fill:#E87E2F,color:#fff
+    style CLAUDE fill:#F5E6D3,color:#333
+    style TOOLS fill:#6DB3F2,color:#fff
+    style DEV fill:#7BC47F,color:#333
+    style FS fill:#B8B8B8,color:#333
+    style GIT fill:#B8B8B8,color:#333
+    style SHELL fill:#B8B8B8,color:#333
+    style MCP fill:#B8B8B8,color:#333
+```
+
+*Inspired by [Mohamed Ali Ben Salem's architecture diagram](https://www.linkedin.com/posts/mohamed-ali-ben-salem-2b777b9a_en-ce-moment-je-vois-passer-des-posts-du-activity-7420592149110362112-eY5a) — See [Architecture Internals diagrams](../diagrams/04-architecture-internals.md) for a deeper breakdown.*
 
 ---
 

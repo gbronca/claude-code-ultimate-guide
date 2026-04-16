@@ -6,36 +6,49 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Fixed
+
+- **Architecture.md broken image** (`guide/core/architecture.md`): Replaced missing `./images/claude-code-architecture-overview.jpeg` (file never committed) with a Mermaid flowchart showing Claude Code as an orchestration layer over Claude models and the development environment. Attribution to Mohamed Ali Ben Salem preserved as a text link. Fixes [#25](https://github.com/FlorianBruniaux/claude-code-ultimate-guide/issues/25).
+
+## [3.38.17] - 2026-04-16
+
+### Added
+
+- **Context engineering: Structural Metadata Files** (`guide/core/context-engineering.md`): New subsection in Section 4 documenting the pattern of separating rules context (CLAUDE.md) from structural context (code-map.yaml). Covers the two-type distinction, five standard sections, pointer registration table, auto-generation approach, and a production example from a ~1,300-file TypeScript codebase (Méthode Aristote).
+
+- **`examples/context-engineering/code-map-template.yaml`**: Generic starter template for structural metadata files — small auto-generated YAML (~1K tokens) capturing codebase shape: architecture layers with file counts, component domains, nested CLAUDE.md inventory, project stats, key paths. Separate from rules/config context.
+
+- **`examples/context-engineering/context-bench.sh`**: Benchmark script measuring impact of structural metadata files. `--budget` compares token cost across three loading strategies (no code-map / always-on / on-demand). `--probe` tests what % of structural questions are answerable from code-map.yaml without filesystem traversal. `--compare` diffs two code-map versions over time.
+
+- **`examples/skills/eval-rules/SKILL.md`**: Skill for rules-focused audit — resolves `paths:` globs against real project files, flags dead or over-broad patterns, interactive rule-by-rule review with in-place edit support.
+
+- **`examples/commands/routines-discover.md`**: Slash command `/routines-discover` surfacing actionable Routine candidates. Audits five angles (scheduled maintenance, event-driven reactions, alert response, cross-system sync, release automation), outputs ranked use case cards with trigger type, input/output, value estimate, and blockers sorted by value-to-effort ratio.
+
+- **Security hardening** (`.claude/settings.json`, `.claude/hooks/`): Applied the guide's own recommendations to this repo. Added `permissions.deny` blocking `.env*`, `*.pem`, `credentials*`, `id_rsa*`, `id_ed25519*`, `secrets/**`. Added `PreToolUse` hook wiring `dangerous-actions-blocker.sh` for Bash, Edit, Write.
+
+- **`examples/commands/scaffold.md`**: Coaching command that asks 4-5 targeted questions to determine whether a use case calls for agent, command, skill, hook, or rule — generates a ready-to-use template for the chosen component type.
+
+- **`scripts/update-cc-releases.sh`**: Extended release tracking to three sources. Added Source 2 (weekly docs digest `code.claude.com/docs/en/whats-new/YYYY-wN.md`) for Desktop/Web/Cloud features not in the GitHub CHANGELOG. Added Source 3 (reference links to Help Center and GitHub releases).
+
+### Changed
+
+- **`examples/context-engineering/ci-drift-check.yml`**: Extended CI trigger section with commented code-level path triggers (`prisma/schema.prisma`, API router dirs) and note on `DRIFT_WARN_ONLY` for gradual gate introduction.
+
+- **`guide/ultimate-guide.md`**: Added `/eval-rules` to audit tools callout (three tools: `audit-agents-skills`, `eval-skills`, `eval-rules`).
+
+- **`CLAUDE.md` split into `@docs` references**: Reduced from 618 lines to 274 lines (-56%). Extracted four reference sections into `docs/` files loaded on demand via `@refs`.
+
 ### Documentation
 
-- **Context management**: Added "bad compact" antipattern callout and updated context rot threshold for 1M context window (Anthropic internal data: 300-400K tokens, task-dependent)
-- **Claude Code Releases**: Updated tracking to v2.1.110 (2026-04-16)
-  - /tui command and tui setting — flicker-free fullscreen rendering in same conversation
-  - Push notification tool — mobile push when Remote Control enabled
-  - --resume/--continue resurrects unexpired scheduled tasks
-  - /focus command (focus view separated from Ctrl+O verbose transcript toggle)
-  - autoScrollEnabled config, session recap for telemetry-disabled users
-  - 30+ bug fixes including MCP hang on dropped connections, stray stdio JSON lines regression, command injection hardening
+- **Context management** (`guide/ultimate-guide.md`): Added "bad compact" antipattern callout and updated context rot threshold for 1M context window (Anthropic internal data: 300-400K tokens, task-dependent).
 
-### Added
+- **Claude Code Releases**: Updated tracking to v2.1.110 — `/tui` command, Push notification tool, `--resume/--continue` for scheduled tasks, `/focus` command, `autoScrollEnabled` config, 30+ bug fixes.
 
-- **Security hardening** (`.claude/settings.json`, `.claude/hooks/`): Applied the guide's own security recommendations to this repo. Added `permissions.deny` blocking read access to `.env*`, `*.pem`, `credentials*`, `id_rsa*`, `id_ed25519*`, `secrets/**`. Added `PreToolUse` hook wiring `dangerous-actions-blocker.sh` for Bash, Edit, and Write operations. Copied `dangerous-actions-blocker.sh` from `examples/hooks/bash/` to `.claude/hooks/`.
+- **Routines (Cloud Automation)** (`guide/ultimate-guide.md` §6.1): Documented April 14, 2026 Routines launch. API trigger (dedicated HTTP POST endpoint, bearer token, returns `session_url`), GitHub event trigger (17 event types, PR filters, requires Claude GitHub App), per-plan daily run limits (Pro 5/day, Max 15/day, Team/Enterprise 25/day).
 
-- **CLAUDE.md split into `@docs` references** (`CLAUDE.md`, `docs/workflows/whitepaper-build.md`, `docs/workflows/landing-sync.md`, `docs/workflows/releases-tracking.md`, `docs/ecosystem.md`): Reduced CLAUDE.md from 618 lines to 274 lines (-56%). Extracted four large reference sections into dedicated `docs/` files loaded on demand via `@refs`. CLAUDE.md now has 4 `@refs` (up from 1), following the Single Source of Truth pattern documented in the guide itself.
+- **`guide/ecosystem/ai-ecosystem.md` §15**: Project Glasswing & Claude Mythos Preview — defensive security initiative with 11 launch partners, automated vulnerability discovery, thousands of high-severity CVEs found in OpenBSD/FFmpeg/Linux kernel.
 
-### Added
-
-- **`examples/commands/routines-discover.md`**: New slash command `/routines-discover` that analyzes a project and surfaces actionable Routine candidates. Reads the codebase (README, CI config, MCP connectors), audits five angles (scheduled maintenance, event-driven reactions, alert response, cross-system sync, release automation), and outputs ranked use case cards with trigger type, input/output, value estimate, and blockers. Sorts by value-to-effort ratio and highlights quick wins achievable in under 15 minutes.
-
-- **Routines (Cloud Automation)** (`guide/ultimate-guide.md` §6.1, `machine-readable/reference.yaml`): Updated the Cloud Scheduled Tasks section to reflect the April 14, 2026 Routines launch. Renamed section to "Routines (Cloud Automation)", updated URLs (`claude.ai/code/scheduled` → `claude.ai/code/routines`, `web-scheduled-tasks.md` → `/en/routines`), added research preview note, per-plan daily run limits (Pro 5/day, Max 15/day, Team/Enterprise 25/day), and documented the two new trigger types. **API trigger**: dedicated HTTP POST endpoint per routine, bearer token auth, optional `text` field for run context, returns `session_url` — turns Claude Code into a callable service from alerting tools, CD pipelines, or any webhook-capable system. **GitHub event trigger**: 17 event types (PR, push, issues, releases, workflow runs, discussions, etc.) with PR filters (author, label, branch, draft/merge state, fork origin), requires Claude GitHub App (separate from `/web-setup`), one session per matching event. Updated comparison table with new "Trigger types" and "Daily run limit" rows. Added 5 new entries to `reference.yaml` (`routines_trigger_types`, `routines_daily_limits`, `routines_api_trigger`, `routines_github_trigger`, `routines_research_preview`). Source: official Anthropic blog + docs (`code.claude.com/docs/en/routines`).
-
-- **`guide/ecosystem/ai-ecosystem.md` §15 — Project Glasswing & Claude Mythos Preview**: New section covering Anthropic's April 7, 2026 defensive security initiative. Documents Claude Mythos Preview (invite-only frontier model for automated vulnerability discovery), 11 launch partners (AWS, Apple, Google, Microsoft, NVIDIA, Palo Alto Networks, etc.), findings (thousands of high-severity CVEs in OpenBSD, FFmpeg, Linux kernel, major OSes and browsers), access model ($100M credits, OpenSSF/Alpha-Omega/Apache funding), and strategic implications for developers (model direction, open-source coordinated disclosure, staged rollout pattern). Includes a companion note on the Messages API on Amazon Bedrock research preview (same week, `us-east-1`, same request schema as first-party API). Sources: TechCrunch, PBS NewsHour, Forbes, Anthropic newsroom.
-
-- **Threat Database v2.13.0** (`examples/commands/resources/threat-db.yaml`): Updated with threats through 2026-04-11. Added 6 new CVEs (Apollo MCP Server DNS rebinding CVE-2026-35577, runZero Platform info leak CVE-2026-5374, taskwarrior command injection CVE-2026-5833, mcp-summarization-functions CVE-2026-5619, n8n-MCP CVE-2026-39974, FastMCP OAuthProxy OAuth bypass CVE-2026-27124), 2 new attack techniques (T023 Lies-in-the-Loop UI deception, T024 Prompt Poaching via browser extension), 2 new scanning tools (ClawArmor by AccuKnox, ClawSec by prompt-security), 2 new research papers (arXiv 2604.06550 Hierarchical Triage Framework, arXiv 2604.04759 Real-World Safety Analysis of OpenClaw), and updated minimum safe versions for apollo-mcp-server (1.7.0), runzero-platform (4.0.260202.0), fastmcp, and a11y-mcp (1.0.6).
-
-- **`examples/commands/scaffold.md`**: Interactive coaching command that asks 4-5 targeted questions to determine whether a use case calls for an agent, command, skill, hook, or rule — then generates a ready-to-use template. Covers decision tree logic, hybrid case handling, and produces scaffolds for all five component types. Inspired by real-world configurations from field projects.
-- **Scheduled Tasks** (`guide/ultimate-guide.md` §6.1, `guide/cheatsheet.md`, `machine-readable/reference.yaml`): Documented all four scheduling methods as a unified section. Cloud Scheduled Tasks (`/schedule`) was previously undocumented in the guide: runs on Anthropic infrastructure, machine-off capable, minimum 1-hour interval, fresh GitHub repo clone per run, branches prefixed `claude/`, available on Pro/Max/Team/Enterprise. Desktop Scheduled Tasks: local machine, minimum 1-minute interval, full local file access, missed runs queued and replayed on reopen. DIY method: system cron + `claude --print` for full control without Desktop app. `/loop` section updated with explicit constraints (max 50 tasks/session, max 3 days, session-scoped). Added comparison table across all three methods. Updated cheatsheet "Features Méconnues" table with separate rows for Cloud and Desktop tasks. Added 15 indexed entries to `reference.yaml`. All launched March 9, 2026.
-- **`scripts/update-cc-releases.sh`**: Extended release tracking to cover three sources instead of one. Added Source 2 (weekly docs digest at `code.claude.com/docs/en/whats-new/YYYY-wN.md`) for Desktop/Web/Cloud features not published in the GitHub CHANGELOG — this was the gap that caused Scheduled Tasks to be missed. Added Source 3 (reference links to Help Center and GitHub releases). Script now fetches the last 3 weekly digest pages and surfaces key feature headlines alongside the CLI CHANGELOG diff.
+- **Threat Database v2.13.0**: 6 new CVEs, 2 new attack techniques (T023 Lies-in-the-Loop, T024 Prompt Poaching), 2 new scanning tools (ClawArmor, ClawSec), 2 new research papers.
 
 ## [3.38.16] - 2026-04-15
 
